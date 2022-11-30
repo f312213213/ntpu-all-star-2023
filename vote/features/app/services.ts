@@ -1,4 +1,4 @@
-import { closeBackdrop, initApp, showBackdrop } from '@/features/app/slice'
+import { closeBackdrop, initApp, showBackdrop } from '@/vote/features/app/slice'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getNumber = createAsyncThunk(

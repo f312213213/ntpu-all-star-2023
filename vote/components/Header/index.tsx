@@ -1,8 +1,8 @@
 import { BsSearch } from 'react-icons/bs'
-import DropdownSiteMenu from '@/components/Header/components/DropdownSiteMenu'
+import DropdownSiteMenu from '@/vote/components/Header/components/DropdownSiteMenu'
 import Link from 'next/link'
 import React from 'react'
-import useIsMobile from '@/hooks/useIsMobile'
+import useIsMobile from '@/vote/hooks/useIsMobile'
 
 const Header = () => {
   return (

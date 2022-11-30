@@ -5,7 +5,12 @@
       "outputs": [".next/**"]
     },
     "lint": {
-      "outputs": []
+      "cache": true,
+      "outputs": [".turbo/**"]
+    },
+    "typecheck": {
+      "cache": true,
+      "outputs": [".turbo/**"]
     },
     "dev": {
       "cache": false

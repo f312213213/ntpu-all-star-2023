@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux'
 import React from 'react'
 
-import { EDialogType } from '@/features/app/interface'
-import { RootState } from '@/features/store'
-import DialogBase from '@/components/Dialogs/DialogBase'
+import { EDialogType } from '@/vote/features/app/interface'
+import { RootState } from '@/vote/features/store'
+import DialogBase from '@/vote/components/Dialogs/DialogBase'
 
 const AlertDialog = () => {
   const alertDialog = useSelector((state: RootState) => state.app.dialog[EDialogType.ALERT])

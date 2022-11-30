@@ -5,7 +5,7 @@ import {
   ICloseDialogAction,
   IOpenDialogAction,
   IState
-} from '@/features/app/interface'
+} from '@/vote/features/app/interface'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 const basicDialog = {

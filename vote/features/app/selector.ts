@@ -1,5 +1,5 @@
-import { EDialogType } from '@/features/app/interface'
-import { RootState } from '@/features/store'
+import { EDialogType } from '@/vote/features/app/interface'
+import { RootState } from '@/vote/features/store'
 import { createSelector } from '@reduxjs/toolkit'
 
 export const isAlertDialogOpenSelector = createSelector(

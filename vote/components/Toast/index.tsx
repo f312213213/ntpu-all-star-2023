@@ -2,8 +2,8 @@ import { FaTimes } from 'react-icons/fa'
 import React from 'react'
 import * as T from '@radix-ui/react-toast'
 
-import { closeToast } from '@/features/app/slice'
-import { useAppDispatch, useAppSelector } from '@/features/store'
+import { closeToast } from '@/vote/features/app/slice'
+import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 
 const Toast = () => {
   const toast = useAppSelector(state => state.app.toast)

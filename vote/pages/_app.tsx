@@ -5,12 +5,12 @@ import React from 'react'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 
-import Backdrop from '@/components/Backdrop'
-import Dialogs from '@/components/Dialogs'
-import Footer from '@/components/Footer'
-import Header from '@/components/Header'
-import Toast from '@/components/Toast'
-import store from '@/features/store'
+import Backdrop from '@/vote/components/Backdrop'
+import Dialogs from '@/vote/components/Dialogs'
+import Footer from '@/vote/components/Footer'
+import Header from '@/vote/components/Header'
+import Toast from '@/vote/components/Toast'
+import store from '@/vote/features/store'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const app = initializeApp({

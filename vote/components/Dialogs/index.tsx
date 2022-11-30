@@ -1,5 +1,5 @@
-import { isAlertDialogOpenSelector, isInfoDialogOpenSelector, isInputDialogOpenSelector } from '@/features/app/selector'
-import { useAppSelector } from '@/features/store'
+import { isAlertDialogOpenSelector, isInfoDialogOpenSelector, isInputDialogOpenSelector } from '@/vote/features/app/selector'
+import { useAppSelector } from '@/vote/features/store'
 import React from 'react'
 import dynamic from 'next/dynamic'
 

@@ -1,6 +1,6 @@
-import { EDialogType } from '@/features/app/interface'
-import { useAppSelector } from '@/features/store'
-import DialogBase from '@/components/Dialogs/DialogBase'
+import { EDialogType } from '@/vote/features/app/interface'
+import { useAppSelector } from '@/vote/features/store'
+import DialogBase from '@/vote/components/Dialogs/DialogBase'
 import React, { FormEvent } from 'react'
 import _ from 'lodash'
 

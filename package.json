@@ -2,11 +2,15 @@
   "name": "ntpu-all-star-2023",
   "version": "0.1.0",
   "workspaces": [
-    "vote"
+    "vote",
+    "register"
   ],
   "private": true,
   "scripts": {
-    "dev": "turbo run dev"
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck"
   },
   "dependencies": {
     "typescript": "4.9.3"

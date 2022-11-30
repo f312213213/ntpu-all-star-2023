@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { EDialogType, IBasicDialog } from '@/features/app/interface'
-import { closeDialog } from '@/features/app/slice'
+import { EDialogType, IBasicDialog } from '@/vote/features/app/interface'
+import { closeDialog } from '@/vote/features/app/slice'
 import { useDispatch } from 'react-redux'
 import React from 'react'
 

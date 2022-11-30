@@ -4,7 +4,7 @@ import { MdOutlineHowToVote } from 'react-icons/md'
 import { Menu, Transition } from '@headlessui/react'
 import { RiArrowDropDownLine } from 'react-icons/ri'
 import React, { Fragment } from 'react'
-import useIsMobile from '@/hooks/useIsMobile'
+import useIsMobile from '@/vote/hooks/useIsMobile'
 
 const DropdownSiteMenu = () => {
   const isMobile = useIsMobile()

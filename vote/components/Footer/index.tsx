@@ -2,9 +2,9 @@ import { AiOutlineHome, AiOutlineUser } from 'react-icons/ai'
 import { MdOutlineHowToVote } from 'react-icons/md'
 import React from 'react'
 
-import BottomNavLink from '@/components/Footer/components/BottomNavLink'
+import BottomNavLink from '@/vote/components/Footer/components/BottomNavLink'
 import Link from 'next/link'
-import useIsMobile from '@/hooks/useIsMobile'
+import useIsMobile from '@/vote/hooks/useIsMobile'
 
 const Footer = () => {
   const isMobile = useIsMobile()
