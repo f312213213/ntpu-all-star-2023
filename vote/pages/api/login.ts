@@ -1,5 +1,6 @@
 import { getAuth } from 'firebase-admin/auth'
 import admin from '@/vote/lib/firebase'
+import fetch from 'node-fetch'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 interface Data {
