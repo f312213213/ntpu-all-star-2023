@@ -11,6 +11,7 @@ import Footer from '@/vote/components/Footer'
 import Header from '@/vote/components/Header'
 import Toast from '@/vote/components/Toast'
 import store from '@/vote/features/store'
+import useLoginWithCookie from '@/vote/hooks/login/useLoginWithCookie'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const app = initializeApp({

@@ -29,6 +29,10 @@ export default PlayerSinglePage
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sport, gender, playerId } = context.query as { sport: string, gender: string, playerId: string }
   const playerFromFirestore = await db.collection(sport).doc(gender).collection('player').doc(playerId).get()
+  context.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
   if (!playerFromFirestore.exists) {
     return {
       notFound: true,

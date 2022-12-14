@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import React from 'react'
+import useLoginWithCookie from '@/vote/hooks/login/useLoginWithCookie'
 
 interface ICustomMeta {
   title: string
@@ -19,6 +20,7 @@ interface IPageProps {
 }
 
 const Layout = ({ children, customMeta }: IPageProps) => {
+  useLoginWithCookie()
   const router = useRouter()
   const meta = {
     title: '首頁 - 北大明星賽 2023',

@@ -30,6 +30,10 @@ const SinglePlayerRequestHandler = async (
       .json({ status: '-1' })
   }
   return res
+    .setHeader(
+      'Cache-Control',
+      'public, s-maxage=10, stale-while-revalidate=59'
+    )
     .status(200)
     .json({
       status: '0',

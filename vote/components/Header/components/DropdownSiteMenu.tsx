@@ -6,8 +6,10 @@ import { MdOutlineHowToVote } from 'react-icons/md'
 import { Menu, Transition } from '@headlessui/react'
 import { RiArrowDropDownLine } from 'react-icons/ri'
 import { closeBackdrop, closeDialog, openDialog, openToast, showBackdrop } from '@/vote/features/app/slice'
+import { isLoginSelector } from '@/vote/features/user/selector'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { userLogin, userLogout } from '@/vote/features/user/slice'
+import Link from 'next/link'
 import React, { Fragment } from 'react'
 import useApiHandler from '@/vote/hooks/useApiHandler'
 import useIsMobile from '@/vote/hooks/useIsMobile'
@@ -17,6 +19,7 @@ const DropdownSiteMenu = () => {
   const dispatch = useAppDispatch()
   const isMobile = useIsMobile()
   const apiHandler = useApiHandler()
+  const isLogin = useAppSelector(isLoginSelector)
 
   const loginAction = async (inputState: ILoginAction) => {
     dispatch(showBackdrop())
@@ -57,8 +60,10 @@ const DropdownSiteMenu = () => {
   const logoutAction = () => {
     dispatch(showBackdrop())
     dispatch(userLogout())
+    document.cookie = 'stdla' + '=; Max-Age=0'
     setTimeout(() => {
       dispatch(closeBackdrop())
+      window.location.reload()
     }, 300)
   }
 
@@ -93,7 +98,8 @@ const DropdownSiteMenu = () => {
             <div className={'px-1 py-1 '}>
               <Menu.Item>
                 {({ active }) => (
-                  <button
+                  <Link
+                    href={'/'}
                     className={`${
                       active ? 'bg-violet-500 text-white' : 'text-gray-900'
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
@@ -103,7 +109,7 @@ const DropdownSiteMenu = () => {
                       aria-hidden={'true'}
                     />
                     首頁
-                  </button>
+                  </Link>
                 )}
               </Menu.Item>
             </div>
@@ -111,7 +117,8 @@ const DropdownSiteMenu = () => {
             <div className={'px-1 py-1'}>
               <Menu.Item>
                 {({ active }) => (
-                  <button
+                  <Link
+                    href={'/vote'}
                     className={`${
                       active ? 'bg-violet-500 text-white' : 'text-gray-900'
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
@@ -121,27 +128,32 @@ const DropdownSiteMenu = () => {
                       aria-hidden={'true'}
                     />
                     投票
-                  </button>
+                  </Link>
                 )}
               </Menu.Item>
             </div>
 
             <div className={'px-1 py-1'}>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                  >
-                    <AiOutlineUser
-                      className={'mr-2 h-5 w-5 text-violet-400'}
-                      aria-hidden={'true'}
-                    />
-                    個人頁面
-                  </button>
-                )}
-              </Menu.Item>
+              {
+                isLogin && (
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        href={'/me'}
+                        className={`${
+                          active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      >
+                        <AiOutlineUser
+                          className={'mr-2 h-5 w-5 text-violet-400'}
+                          aria-hidden={'true'}
+                        />
+                        個人頁面
+                      </Link>
+                    )}
+                  </Menu.Item>
+                )
+              }
               <Menu.Item>
                 {({ active }) => {
                   if (user.status === EUserStatus.SUCCESS) {

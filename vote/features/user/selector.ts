@@ -1,18 +1,6 @@
-import { EDialogType } from '@/vote/features/app/interface'
+import { EUserStatus } from '@/vote/features/user/interface'
 import { RootState } from '@/vote/features/store'
-import { createSelector } from '@reduxjs/toolkit'
 
-export const isAlertDialogOpenSelector = createSelector(
-  (state: RootState) => state.app.dialog[EDialogType.ALERT].open,
-  (open) => open
-)
+export const isLoginSelector = (state: RootState) => state.user.status === EUserStatus.SUCCESS && !!state.user.user.uid
 
-export const isInfoDialogOpenSelector = createSelector(
-  (state: RootState) => state.app.dialog[EDialogType.INFO].open,
-  (open) => open
-)
-
-export const isInputDialogOpenSelector = createSelector(
-  (state: RootState) => state.app.dialog[EDialogType.INPUT].open,
-  (open) => open
-)
+export const userInfoSelector = (state: RootState) => state.user.user

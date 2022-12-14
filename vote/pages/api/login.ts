@@ -14,7 +14,6 @@ interface IRequestBody extends NextApiRequest {
     password: string
   }
 }
-
 const DAY = 86400
 
 const loginRequestHandler = async (
@@ -46,8 +45,9 @@ const loginRequestHandler = async (
           photoURL,
           uid,
         } = queryResult
+        const token = await getAuth().createCustomToken(uid)
         return res
-          .setHeader('Set-Cookie', `stdla=123444;max-Age=${2 * DAY}`)
+          .setHeader('Set-Cookie', `stdla=${token}; Max-Age=${5 * DAY}; path=/`)
           .status(200)
           .json({ status: '0', user: { displayName, photoURL, uid, username } })
       }
@@ -70,8 +70,9 @@ const loginRequestHandler = async (
         photoURL = '',
         uid,
       } = createResult
+      const token = await getAuth().createCustomToken(uid)
       return res
-        .setHeader('Set-Cookie', `stdla=123444;max-Age=${2 * DAY}`)
+        .setHeader('Set-Cookie', `stdla=${token}; Max-Age=${5 * DAY}; path=/`)
         .status(200)
         .json({ status: '0', user: { displayName, photoURL, uid, username } })
     } catch (error) {
