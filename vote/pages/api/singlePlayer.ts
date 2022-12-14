@@ -30,10 +30,7 @@ const SinglePlayerRequestHandler = async (
       .json({ status: '-1' })
   }
   return res
-    .setHeader(
-      'Cache-Control',
-      'public, s-maxage=10, stale-while-revalidate=59'
-    )
+    .setHeader('Cache-Control', 'max-age=10, public')
     .status(200)
     .json({
       status: '0',
