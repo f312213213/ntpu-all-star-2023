@@ -10,7 +10,7 @@ interface IProps extends IBasicDialog {
   cancelAction?: () => void
 }
 
-const DialogBase = ({ open, type, title, content, successAction, cancelAction }: IProps) => {
+const DialogBase = ({ open, type, title, content, successAction, cancelAction, autoClose }: IProps) => {
   const dispatch = useDispatch()
   const closeModal = () => {
     dispatch(closeDialog({ type }))
@@ -49,7 +49,9 @@ const DialogBase = ({ open, type, title, content, successAction, cancelAction }:
                     successAction
                       ? () => {
                           successAction()
-                          closeModal()
+                          if (autoClose) {
+                            closeModal()
+                          }
                         }
                       : undefined
                   }
@@ -84,7 +86,7 @@ export const DialogTitle = ({ title }: { title: string }) => {
   )
 }
 
-export const DialogContent = ({ content }: { content: string | React.ReactNode }) => {
+export const DialogContent = ({ content }: { content: any }) => {
   return (
     <div className={'mt-2 text-base text-gray-500'}>
       {content ?? ''}

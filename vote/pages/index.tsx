@@ -14,7 +14,7 @@ const HomePage = () => {
         href={'/?user=123'}
         as={'/123'}
       >
-        123
+        home
       </Link>
     </Layout>
   )

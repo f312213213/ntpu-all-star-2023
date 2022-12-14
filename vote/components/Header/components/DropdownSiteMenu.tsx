@@ -1,13 +1,67 @@
 import { AiOutlineHome, AiOutlineUser } from 'react-icons/ai'
-import { FiLogOut } from 'react-icons/fi'
+import { EDialogType, EToastType } from '@/vote/features/app/interface'
+import { EUserStatus, ILoginAction } from '@/vote/features/user/interface'
+import { FiLogIn, FiLogOut } from 'react-icons/fi'
 import { MdOutlineHowToVote } from 'react-icons/md'
 import { Menu, Transition } from '@headlessui/react'
 import { RiArrowDropDownLine } from 'react-icons/ri'
+import { closeBackdrop, closeDialog, openDialog, openToast, showBackdrop } from '@/vote/features/app/slice'
+import { useAppDispatch, useAppSelector } from '@/vote/features/store'
+import { userLogin, userLogout } from '@/vote/features/user/slice'
 import React, { Fragment } from 'react'
+import useApiHandler from '@/vote/hooks/useApiHandler'
 import useIsMobile from '@/vote/hooks/useIsMobile'
 
 const DropdownSiteMenu = () => {
+  const user = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch()
   const isMobile = useIsMobile()
+  const apiHandler = useApiHandler()
+
+  const loginAction = async (inputState: ILoginAction) => {
+    dispatch(showBackdrop())
+    const headers = new Headers()
+    headers.append('Content-Type', 'application/json')
+    try {
+      const data = await apiHandler({
+        apiRoute: '/api/login',
+        needAuth: false,
+        options: {
+          method: 'post',
+          body: JSON.stringify(inputState),
+          headers,
+        },
+      })
+
+      const { user } = data.data
+
+      dispatch(userLogin(user))
+      dispatch(closeDialog({
+        type: EDialogType.INPUT,
+      }))
+      dispatch(closeBackdrop())
+
+      dispatch(openToast({
+        type: EToastType.SUCCESS,
+        title: '登入成功',
+      }))
+    } catch (e) {
+      dispatch(closeBackdrop())
+      dispatch(openToast({
+        type: EToastType.ERROR,
+        title: '錯誤的帳號密碼',
+      }))
+    }
+  }
+
+  const logoutAction = () => {
+    dispatch(showBackdrop())
+    dispatch(userLogout())
+    setTimeout(() => {
+      dispatch(closeBackdrop())
+    }, 300)
+  }
+
   return (
     <div className={' text-right'}>
       <Menu as={'div'} className={'relative inline-block text-left'}>
@@ -89,19 +143,55 @@ const DropdownSiteMenu = () => {
                 )}
               </Menu.Item>
               <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={`${
-                      active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                  >
-                    <FiLogOut
-                      className={'mr-2 h-5 w-5 text-violet-400'}
-                      aria-hidden={'true'}
-                    />
-                    登出
-                  </button>
-                )}
+                {({ active }) => {
+                  if (user.status === EUserStatus.SUCCESS) {
+                    return <button
+                      className={`${
+                        active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      onClick={logoutAction}
+                    >
+                      <FiLogIn
+                        className={'mr-2 h-5 w-5 text-violet-400'}
+                        aria-hidden={'true'}
+                      />
+                      登出
+                    </button>
+                  }
+                  return (
+                    <button
+                      className={`${
+                        active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      onClick={() => {
+                        dispatch(openDialog({
+                          title: '登入',
+                          type: EDialogType.INPUT,
+                          autoClose: false,
+                          content: [
+                            {
+                              type: 'text',
+                              name: 'username',
+                              placeholder: '學號',
+                            },
+                            {
+                              type: 'password',
+                              name: 'password',
+                              placeholder: '密碼',
+                            },
+                          ],
+                          onConfirm: (inputState: ILoginAction) => loginAction(inputState),
+                        }))
+                      }}
+                    >
+                      <FiLogOut
+                        className={'mr-2 h-5 w-5 text-violet-400'}
+                        aria-hidden={'true'}
+                      />
+                      登入
+                    </button>
+                  )
+                }}
               </Menu.Item>
             </div>
           </Menu.Items>

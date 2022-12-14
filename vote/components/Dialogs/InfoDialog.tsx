@@ -13,6 +13,7 @@ const InfoDialog = () => {
       type={EDialogType.INFO}
       title={infoDialog.title}
       content={infoDialog.content}
+      autoClose={infoDialog.autoClose}
       successAction={() => {
       }}
     />

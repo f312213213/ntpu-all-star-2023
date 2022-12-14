@@ -11,6 +11,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 const basicDialog = {
   open: false,
   title: '',
+  autoClose: true,
 }
 
 const initialState: IState = {
@@ -45,8 +46,10 @@ const appSlice = createSlice({
         onDialogLoad,
         onDialogClose,
         onConfirm,
+        autoClose = true,
       } = action.payload
 
+      state.dialog[type].autoClose = autoClose
       state.dialog[type].open = true
       state.dialog[type].title = title
       if (content) {
@@ -58,7 +61,7 @@ const appSlice = createSlice({
       if (onDialogClose) {
         state.dialog[type].onDialogClose = onDialogClose
       }
-      if (onConfirm && type === EDialogType.ALERT) {
+      if (onConfirm && (type === EDialogType.ALERT || type === EDialogType.INPUT)) {
         state.dialog[type].onConfirm = onConfirm
       }
     },

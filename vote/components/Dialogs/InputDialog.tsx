@@ -19,6 +19,7 @@ const InputDialog = () => {
       open={inputDialog.open}
       type={EDialogType.INPUT}
       title={inputDialog.title}
+      autoClose={inputDialog.autoClose}
       content={
         <form
           ref={inputRef}
@@ -26,8 +27,7 @@ const InputDialog = () => {
           className={'flex flex-col'}
         >
           {
-            // @ts-ignore
-            inputDialog.content && inputDialog.content.map((input, index) => {
+            inputDialog.content && Array.isArray(inputDialog.content) && inputDialog.content.map((input, index) => {
               return (
                 <input
                   className={'m-2 p-4 rounded-md border-2 border-gray-400 focus:outline-gray-500 transition'}

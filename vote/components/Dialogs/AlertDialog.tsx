@@ -14,6 +14,7 @@ const AlertDialog = () => {
       type={EDialogType.ALERT}
       title={alertDialog.title}
       content={alertDialog.content}
+      autoClose={alertDialog.autoClose}
       successAction={() => {
         if (alertDialog.onConfirm) {
           alertDialog.onConfirm()

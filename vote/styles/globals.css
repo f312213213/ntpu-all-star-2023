@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+[data-swipe="move"] {
+    @apply translate-x-[var(--radix-toast-swipe-move-x)]
+}
+
+.info-toast {
+    @apply alert-info
+}
+
+.error-toast {
+    @apply alert-error
+}
+
+.warning-toast {
+    @apply alert-warning
+}
+
+.success-toast {
+    @apply alert-success
+}

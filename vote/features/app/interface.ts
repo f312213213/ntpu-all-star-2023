@@ -10,9 +10,14 @@ export enum EAppStatus {
 export interface IBasicDialog {
   open: boolean
   title: string
-  content?: string | ReactNode
+  content?: string | ReactNode | {
+    type: string
+    name: string
+    placeholder: string
+  }[]
   onDialogLoad?: () => void,
   onDialogClose?: () => void,
+  autoClose: boolean
 }
 
 export enum EDialogType {
@@ -34,8 +39,8 @@ export interface IInputDialog extends IBasicDialog {
 
 export enum EToastType {
   INITIAL = 'INITIAL',
-  SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR'
+  SUCCESS = 'success',
+  ERROR = 'error'
 }
 
 export interface IToast {
@@ -60,11 +65,16 @@ export interface IState {
 
 export interface IOpenDialogAction {
   title: string
-  content?: string | ReactNode,
   type: EDialogType
+  content?: string | ReactNode | {
+    type: string
+    name: string
+    placeholder: string
+  }[],
   onDialogLoad?: () => void
   onDialogClose?: () => void
-  onConfirm?: () => void
+  onConfirm?: any
+  autoClose?: boolean
 }
 
 export interface ICloseDialogAction {

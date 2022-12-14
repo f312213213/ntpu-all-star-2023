@@ -1,16 +1,12 @@
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { useAppSelector } from '../../features/store'
 import React from 'react'
+import usePageScrollLock from '@/vote/hooks/usePageScrollLock'
 
 const Backdrop = () => {
   const show = useAppSelector(state => state.app.backdrop.show)
-  React.useEffect(() => {
-    if (show) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-  }, [show])
+
+  usePageScrollLock(show)
 
   if (!show) return null
 
