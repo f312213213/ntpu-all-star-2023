@@ -1,5 +1,6 @@
 import { IPlayer } from '@/vote/interfaces/player'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import useApiHandler from '@/vote/hooks/useApiHandler'
@@ -46,28 +47,34 @@ const ScreenSinglePlayer = () => {
   const { introduction, photoURL, username } = playerData
 
   return (
-    <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 flex justify-center items-center top-0 left-0'} ref={outRef} onClick={handleClose} >
-      <div className={'flex flex-col justify-center items-center space-y-3 bg-white w-8/12 rounded-xl md:rounded-none md:w-3/5 md:h-screen p-4 overflow-y-auto'}>
-        <div className={'card w-full '}>
-           <figure className={'relative h-52'}>
-            <Image
-              className={'object-contain'}
-              fill
-              src={photoURL}
-              alt={username}
-            />
-           </figure>
-           <div className={'card-body'}>
-            <h2 className={'card-title'}>
-              {username}
-            </h2>
-            <p>
-              {introduction}
-            </p>
-           </div>
+    <>
+      <Head>
+        <title>{`${username} 的投票頁面 - 北大明星賽 2023`}</title>
+        <meta content={introduction} name={'description'} />
+      </Head>
+      <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 flex justify-center items-center top-0 left-0'} ref={outRef} onClick={handleClose} >
+        <div className={'flex flex-col justify-center items-center space-y-3 bg-white w-8/12 rounded-xl md:rounded-none md:w-3/5 md:h-screen p-4 overflow-y-auto'}>
+          <div className={'card w-full '}>
+            <figure className={'relative h-52'}>
+              <Image
+                className={'object-contain'}
+                fill
+                src={photoURL}
+                alt={username}
+              />
+            </figure>
+            <div className={'card-body'}>
+              <h2 className={'card-title'}>
+                {username}
+              </h2>
+              <p>
+                {introduction}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

@@ -71,19 +71,40 @@ const DropdownSiteMenu = () => {
     <div className={' text-right'}>
       <Menu as={'div'} className={'relative inline-block text-left'}>
         <div>
-          <Menu.Button className={'btn btn-circle inline-flex w-full justify-center rounded-full bg-opacity-20 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'}>
-            <div className={'avatar placeholder'}>
-              <div className={'bg-neutral-focus text-neutral-content rounded-full w-12'}>
-                <span className={'text-3xl'}>
-                  {
-                    isMobile
-                      ? <RiArrowDropDownLine />
-                      : <AiOutlineUser />
-                  }
-                </span>
-              </div>
-            </div>
-          </Menu.Button>
+          {
+            isLogin
+              ? (
+                <Menu.Button className={'btn btn-ghost inline-flex w-full justify-center bg-opacity-20 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'}>
+                  <p className={'flex gap-1 items-center'}>
+                    Hi, {user.user.username} <span className={'scale-125'}><RiArrowDropDownLine /></span>
+                  </p>
+                </Menu.Button>
+                )
+              : <button
+                  onClick={() => {
+                    dispatch(openDialog({
+                      title: '登入',
+                      type: EDialogType.INPUT,
+                      autoClose: false,
+                      content: [
+                        {
+                          type: 'text',
+                          name: 'username',
+                          placeholder: '學號',
+                        },
+                        {
+                          type: 'password',
+                          name: 'password',
+                          placeholder: '密碼',
+                        },
+                      ],
+                      onConfirm: (inputState: ILoginAction) => loginAction(inputState),
+                    }))
+                  }}
+                  className={'btn btn-ghost'}>
+                  登入
+                </button>
+          }
         </div>
         <Transition
           as={Fragment}

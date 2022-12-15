@@ -1,25 +1,40 @@
 import { GetServerSideProps } from 'next'
 import { db } from '@/vote/lib/firebase'
+import Image from 'next/image'
 import Layout from '@/vote/components/Layout'
 import React from 'react'
 
 interface IProps {
-  playerName: string
-  description: string
+  username: string
+  introduction: string
+  photoURL: string
 }
 
 const PlayerSinglePage = ({
-  playerName,
-  description,
+  username,
+  introduction,
+  photoURL,
 }: IProps) => {
   return (
     <Layout
       customMeta={{
-        title: `${playerName} 的投票頁面 - 北大明星賽 2023`,
-        description,
+        title: `${username} 的投票頁面 - 北大明星賽 2023`,
+        description: introduction,
       }}
     >
-      {playerName}
+
+      <div className={'relative h-96'}>
+        <Image
+          className={'object-contain'}
+          fill
+          src={photoURL}
+          alt={username}
+        />
+      </div>
+      <p>
+
+        {username}
+      </p>
     </Layout>
   )
 }
@@ -38,8 +53,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const player = playerFromFirestore.data()
   return {
     props: {
-      playerName: player?.username,
-      description: player?.introduction,
+      username: player?.username,
+      introduction: player?.introduction,
+      photoURL: player?.photoURL,
     },
   }
 }

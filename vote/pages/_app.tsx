@@ -1,6 +1,7 @@
 import { ErrorBoundary } from 'react-error-boundary'
 import { Provider } from 'react-redux'
 import { initializeApp } from 'firebase/app'
+import NextNProgress from 'nextjs-progressbar'
 import React from 'react'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
@@ -11,10 +12,9 @@ import Footer from '@/vote/components/Footer'
 import Header from '@/vote/components/Header'
 import Toast from '@/vote/components/Toast'
 import store from '@/vote/features/store'
-import useLoginWithCookie from '@/vote/hooks/login/useLoginWithCookie'
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const app = initializeApp({
+  initializeApp({
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
     authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
     projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
@@ -31,6 +31,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <Header />
         <Toast />
         <Dialogs />
+        <NextNProgress options={{ showSpinner: false }} />
         <Component {...pageProps} />
         <Backdrop />
         <Footer />
