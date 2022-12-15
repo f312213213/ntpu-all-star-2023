@@ -33,7 +33,6 @@ const ScreenSinglePlayer = () => {
   }
 
   useEffect(() => {
-    console.log(!!playerData)
     getSinglePlayer()
     return () => {
       setPlayerData(null)
@@ -44,7 +43,7 @@ const ScreenSinglePlayer = () => {
 
   if (!playerData) return null
 
-  const { description, img, name } = playerData
+  const { introduction, photoURL, username } = playerData
 
   return (
     <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 flex justify-center items-center top-0 left-0'} ref={outRef} onClick={handleClose} >
@@ -54,16 +53,16 @@ const ScreenSinglePlayer = () => {
             <Image
               className={'object-contain'}
               fill
-              src={img}
-              alt={name}
+              src={photoURL}
+              alt={username}
             />
            </figure>
            <div className={'card-body'}>
             <h2 className={'card-title'}>
-              {name}
+              {username}
             </h2>
             <p>
-              {description}
+              {introduction}
             </p>
            </div>
         </div>

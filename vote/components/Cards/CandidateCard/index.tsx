@@ -26,7 +26,7 @@ const CandidateCard = ({ playerId, description, img, name }: IProps) => {
         <h2 className={'card-title'}>
           {name}
         </h2>
-        <p>
+        <p className={'truncate'}>
           {description}
         </p>
         <div className={'card-actions justify-end'}>

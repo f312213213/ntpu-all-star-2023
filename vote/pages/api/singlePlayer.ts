@@ -23,7 +23,7 @@ const SinglePlayerRequestHandler = async (
   res: NextApiResponse<Data>
 ) => {
   const { sport, gender, playerId } = req.query
-  const playerFromFirestore = await db.collection(sport).doc(gender).collection('player').doc(playerId).get()
+  const playerFromFirestore = await db.collection(sport).doc(gender).collection('candidates').doc(playerId).get()
   if (!playerFromFirestore.exists) {
     return res
       .status(404)

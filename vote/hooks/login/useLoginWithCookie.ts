@@ -31,6 +31,8 @@ const useLoginWithCookie = () => {
         type: EToastType.ERROR,
         title: '登入已過期！',
       }))
+      document.cookie = 'stdla=;Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+      dispatch(closeBackdrop())
     }
   }
   useEffect(() => {

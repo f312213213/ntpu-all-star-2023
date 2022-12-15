@@ -21,7 +21,7 @@ const Footer = () => {
           icon={<MdOutlineHowToVote />}
         />
         <BottomNavLink
-          href={'/user'}
+          href={'/me'}
           icon={<AiOutlineUser />}
         />
       </div>
@@ -34,7 +34,10 @@ const Footer = () => {
       </div>
       <div className={'grid-flow-col gap-4 md:place-self-center md:justify-self-end'}>
         <p>
-        Design and build by david
+        Design and build by
+          <a className={'text-blue-50'} href={'https://chiendavid.com'} target={'_blank'} rel={'noreferrer'}>
+            David
+          </a>
         </p>
       </div>
     </footer>

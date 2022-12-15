@@ -60,7 +60,7 @@ const DropdownSiteMenu = () => {
   const logoutAction = () => {
     dispatch(showBackdrop())
     dispatch(userLogout())
-    document.cookie = 'stdla' + '=; Max-Age=0'
+    document.cookie = 'stdla=;Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
     setTimeout(() => {
       dispatch(closeBackdrop())
       window.location.reload()

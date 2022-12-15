@@ -37,9 +37,9 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
               <CandidateCard
                 key={player.id}
                 playerId={player.id}
-                img={player.img}
-                name={player.name}
-                description={player.description}
+                img={player.photoURL}
+                name={player.username}
+                description={player.introduction}
               />
             )
           })
@@ -53,15 +53,22 @@ export default PlayerCategoryPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sport, gender } = context.query as { sport: string, gender: string }
-  const playersFromFirestore = await db.collection(sport).doc(gender).collection('player').get()
+  const playersFromFirestore = await db
+    .collection(sport)
+    .doc(gender)
+    .collection('candidates')
+    .orderBy('voteCount', 'desc')
+    .limit(10)
+    .get()
 
   const playersToPage: IPlayer[] = []
 
   playersFromFirestore.forEach((player) => {
+    console.log(player.data())
     playersToPage.push({
-      description: '',
-      img: '',
-      name: '',
+      introduction: '',
+      photoURL: '',
+      username: '',
       id: player.id,
       ...player.data(),
     })
