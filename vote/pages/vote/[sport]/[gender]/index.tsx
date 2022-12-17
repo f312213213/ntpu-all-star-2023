@@ -40,6 +40,7 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
                 img={player.photoURL}
                 name={player.username}
                 description={player.introduction}
+                gender={player.gender}
               />
             )
           })
@@ -64,8 +65,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const playersToPage: IPlayer[] = []
 
   playersFromFirestore.forEach((player) => {
-    console.log(player.data())
     playersToPage.push({
+      gender,
       introduction: '',
       photoURL: '',
       username: '',

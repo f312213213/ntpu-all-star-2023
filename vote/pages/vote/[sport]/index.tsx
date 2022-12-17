@@ -9,6 +9,7 @@ import CandidateCard from '@/vote/components/Cards/CandidateCard'
 import Layout from '@/vote/components/Layout'
 import React, { useEffect, useState } from 'react'
 import ScreenSinglePlayer from '@/vote/components/ScreenSinglePlayer'
+import gender from '@/vote/pages/vote/[sport]/[gender]'
 
 interface IProps {
   sportType: string
@@ -38,6 +39,7 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
                 img={player.photoURL}
                 name={player.username}
                 description={player.introduction}
+                gender={player.gender}
               />
             )
           })
@@ -68,6 +70,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   malePlayersFromFirestore.forEach((player) => {
     playersToPage.push({
+      gender: 'male',
       introduction: '',
       photoURL: '',
       username: '',
@@ -78,6 +81,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   femalePlayersFromFirestore.forEach((player) => {
     playersToPage.push({
+      gender: 'female',
       introduction: '',
       photoURL: '',
       username: '',
@@ -86,7 +90,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
   })
 
-  context.res.setHeader('Cache-Control', 'max-age=10, public')
+  context.res.setHeader('Cache-Control', 'max-age=86400, public')
 
   return {
     props: {

@@ -8,9 +8,10 @@ interface IProps {
   description: string
   img: string
   name: string
+  gender: string
 }
 
-const CandidateCard = ({ playerId, description, img, name }: IProps) => {
+const CandidateCard = ({ playerId, description, img, name, gender }: IProps) => {
   const router = useRouter()
   return (
     <div className={'card w-full bg-base-100 shadow-xl'}>
@@ -32,14 +33,14 @@ const CandidateCard = ({ playerId, description, img, name }: IProps) => {
         <div className={'card-actions justify-end'}>
           <Link
             href={{
-              pathname: '/vote/[sport]/[gender]',
+              pathname: router.pathname,
               query: {
                 sport: router.query.sport,
-                gender: router.query.gender,
+                gender,
                 playerId,
               },
             }}
-            as={`/vote/${router.query.sport}/${router.query.gender}/${playerId}`}
+            as={`${router.asPath}/${playerId}`}
             className={'btn btn-primary'}
             scroll={false}
           >

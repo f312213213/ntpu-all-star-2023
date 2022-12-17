@@ -1,5 +1,8 @@
-import { closeBackdrop, initApp, showBackdrop } from '@/vote/features/app/slice'
+import { EDialogType, EToastType } from '@/vote/features/app/interface'
+import { ILoginAction } from '@/vote/features/user/interface'
+import { closeBackdrop, closeDialog, initApp, openToast, showBackdrop } from '@/vote/features/app/slice'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { userLogin } from '@/vote/features/user/slice'
 
 export const getNumber = createAsyncThunk(
   'app/getNumber',

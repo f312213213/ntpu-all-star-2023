@@ -4,8 +4,10 @@ import * as T from '@radix-ui/react-toast'
 
 import { closeToast } from '@/vote/features/app/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
+import useIsMobile from '@/vote/hooks/useIsMobile'
 
 const Toast = () => {
+  const isMobile = useIsMobile()
   const toast = useAppSelector(state => state.app.toast)
   const dispatch = useAppDispatch()
 
@@ -16,7 +18,7 @@ const Toast = () => {
   }
 
   const renderClass = () => {
-    return `alert ${toast.type}-toast shadow-lg w-96 m-4`
+    return `alert ${toast.type}-toast shadow-lg ${isMobile ? 'w-80' : 'w-96'} m-4`
   }
 
   return (

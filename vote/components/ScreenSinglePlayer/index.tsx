@@ -16,7 +16,7 @@ const ScreenSinglePlayer = () => {
 
   const handleClose = (e: any) => {
     if (e.target === outRef.current || e.key === 'Escape') {
-      router.push(`/vote/${router.query.sport}/${router.query.gender}`, undefined, { scroll: false })
+      router.back()
     }
   }
 

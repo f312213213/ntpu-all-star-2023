@@ -25,9 +25,7 @@ const BottomNavLink = ({ href, icon } : IProps) => {
 
   return (
     <Link href={href} className={isCurrentPage ? 'active' : undefined}>
-      <button >
-        {icon}
-      </button>
+      {icon}
     </Link>
   )
 }

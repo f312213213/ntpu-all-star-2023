@@ -3,4 +3,5 @@ export interface IPlayer {
   introduction: string
   photoURL: string
   username: string
+  gender: string
 }

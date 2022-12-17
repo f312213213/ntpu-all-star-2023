@@ -1,71 +1,23 @@
 import { AiOutlineHome, AiOutlineUser } from 'react-icons/ai'
-import { EDialogType, EToastType } from '@/vote/features/app/interface'
+import { EDialogType } from '@/vote/features/app/interface'
 import { EUserStatus, ILoginAction } from '@/vote/features/user/interface'
 import { FiLogIn, FiLogOut } from 'react-icons/fi'
 import { MdOutlineHowToVote } from 'react-icons/md'
 import { Menu, Transition } from '@headlessui/react'
 import { RiArrowDropDownLine } from 'react-icons/ri'
-import { closeBackdrop, closeDialog, openDialog, openToast, showBackdrop } from '@/vote/features/app/slice'
 import { isLoginSelector } from '@/vote/features/user/selector'
+import { openDialog } from '@/vote/features/app/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
-import { userLogin, userLogout } from '@/vote/features/user/slice'
 import Link from 'next/link'
 import React, { Fragment } from 'react'
-import useApiHandler from '@/vote/hooks/useApiHandler'
 import useIsMobile from '@/vote/hooks/useIsMobile'
+import useLoginAction from '@/vote/hooks/login/useLoginAction'
 
 const DropdownSiteMenu = () => {
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
-  const isMobile = useIsMobile()
-  const apiHandler = useApiHandler()
   const isLogin = useAppSelector(isLoginSelector)
-
-  const loginAction = async (inputState: ILoginAction) => {
-    dispatch(showBackdrop())
-    const headers = new Headers()
-    headers.append('Content-Type', 'application/json')
-    try {
-      const data = await apiHandler({
-        apiRoute: '/api/login',
-        needAuth: false,
-        options: {
-          method: 'post',
-          body: JSON.stringify(inputState),
-          headers,
-        },
-      })
-
-      const { user } = data.data
-
-      dispatch(userLogin(user))
-      dispatch(closeDialog({
-        type: EDialogType.INPUT,
-      }))
-      dispatch(closeBackdrop())
-
-      dispatch(openToast({
-        type: EToastType.SUCCESS,
-        title: '登入成功',
-      }))
-    } catch (e) {
-      dispatch(closeBackdrop())
-      dispatch(openToast({
-        type: EToastType.ERROR,
-        title: '錯誤的帳號密碼',
-      }))
-    }
-  }
-
-  const logoutAction = () => {
-    dispatch(showBackdrop())
-    dispatch(userLogout())
-    document.cookie = 'stdla=;Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-    setTimeout(() => {
-      dispatch(closeBackdrop())
-      window.location.reload()
-    }, 300)
-  }
+  const { loginAction, logoutAction } = useLoginAction()
 
   return (
     <div className={' text-right'}>

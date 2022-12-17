@@ -6,6 +6,9 @@ const nextConfig = {
   images: {
     domains: ['storage.googleapis.com'],
   },
+  experimental: {
+    scrollRestoration: true,
+  },
 }
 
 module.exports = nextConfig
