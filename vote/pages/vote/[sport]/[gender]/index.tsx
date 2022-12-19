@@ -41,6 +41,7 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
                 name={player.username}
                 description={player.introduction}
                 gender={player.gender}
+                collection={player.collection}
               />
             )
           })
@@ -53,11 +54,11 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
 export default PlayerCategoryPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { sport, gender } = context.query as { sport: string, gender: string }
+  const { sport, gender, collection = 'candidates' } = context.query as { sport: string, gender: string, collection: string }
   const playersFromFirestore = await db
     .collection(sport)
     .doc(gender)
-    .collection('candidates')
+    .collection(collection)
     .orderBy('voteCount', 'desc')
     .limit(10)
     .get()
@@ -71,6 +72,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       photoURL: '',
       username: '',
       id: player.id,
+      collection,
       ...player.data(),
     })
   })

@@ -68,16 +68,14 @@ const Footer = () => {
   }
   return (
     <footer className={'footer items-center p-4 bg-neutral text-neutral-content'}>
-      <div className={'items-center grid-flow-col'}>
-        <p>Copyright © 2023 - All right reserved</p>
-      </div>
-      <div className={'grid-flow-col gap-4 md:place-self-center md:justify-self-end'}>
+      <div className={'flex justify-between w-full flex-col sm:flex-row items-center'}>
         <p>
-        Design and build by
+          Design and build by {' '}
           <a className={'text-blue-50'} href={'https://chiendavid.com'} target={'_blank'} rel={'noreferrer'}>
             David
           </a>
         </p>
+        <p>Copyright © 2023 - All right reserved</p>
       </div>
     </footer>
   )

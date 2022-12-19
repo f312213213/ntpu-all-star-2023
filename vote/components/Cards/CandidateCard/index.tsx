@@ -9,9 +9,10 @@ interface IProps {
   img: string
   name: string
   gender: string
+  collection: string
 }
 
-const CandidateCard = ({ playerId, description, img, name, gender }: IProps) => {
+const CandidateCard = ({ playerId, description, img, name, gender, collection }: IProps) => {
   const router = useRouter()
   return (
     <div className={'card w-full bg-base-100 shadow-xl'}>
@@ -38,9 +39,10 @@ const CandidateCard = ({ playerId, description, img, name, gender }: IProps) => 
                 sport: router.query.sport,
                 gender,
                 playerId,
+                collection,
               },
             }}
-            as={`${router.asPath}/${playerId}`}
+            as={`${router.asPath}/${gender}/${collection}/${playerId}`}
             className={'btn btn-primary'}
             scroll={false}
           >

@@ -15,6 +15,7 @@ interface IRequestQuery extends NextApiRequest {
     sport: string
     gender: string
     playerId: string
+    collection: string
   }
 }
 
@@ -22,8 +23,8 @@ const SinglePlayerRequestHandler = async (
   req: IRequestQuery,
   res: NextApiResponse<Data>
 ) => {
-  const { sport, gender, playerId } = req.query
-  const playerFromFirestore = await db.collection(sport).doc(gender).collection('candidates').doc(playerId).get()
+  const { sport, gender, playerId, collection = 'candidates' } = req.query
+  const playerFromFirestore = await db.collection(sport).doc(gender).collection(collection).doc(playerId).get()
   if (!playerFromFirestore.exists) {
     return res
       .status(404)

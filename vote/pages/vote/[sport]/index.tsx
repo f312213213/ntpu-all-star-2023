@@ -40,6 +40,7 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
                 name={player.username}
                 description={player.introduction}
                 gender={player.gender}
+                collection={player.collection}
               />
             )
           })
@@ -54,41 +55,63 @@ export default PlayerCategoryPage
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sport, gender } = context.query as { sport: string, gender: string }
 
-  const malePlayersFromFirestore = await db
-    .collection(sport)
-    .doc('male')
-    .collection('candidates')
-    .get()
-
-  const femalePlayersFromFirestore = await db
-    .collection(sport)
-    .doc('female')
-    .collection('candidates')
-    .get()
-
+  const femalePlayersCollectionList: string[] = []
+  const malePlayersCollectionList: string[] = []
   const playersToPage: IPlayer[] = []
 
-  malePlayersFromFirestore.forEach((player) => {
-    playersToPage.push({
-      gender: 'male',
-      introduction: '',
-      photoURL: '',
-      username: '',
-      id: player.id,
-      ...player.data(),
-    })
-  })
+  const femalePlayersCollectionListFromFirestore = await db
+    .collection(sport)
+    .doc('female')
+    .listCollections()
 
-  femalePlayersFromFirestore.forEach((player) => {
-    playersToPage.push({
-      gender: 'female',
-      introduction: '',
-      photoURL: '',
-      username: '',
-      id: player.id,
-      ...player.data(),
+  femalePlayersCollectionListFromFirestore.forEach(col => femalePlayersCollectionList.push(col.id))
+
+  const malePlayersCollectionListFromFirestore = await db
+    .collection(sport)
+    .doc('female')
+    .listCollections()
+
+  malePlayersCollectionListFromFirestore.forEach(col => malePlayersCollectionList.push(col.id))
+
+  for (const collection of malePlayersCollectionList) {
+    const malePlayersFromFirestore = await db
+      .collection(sport)
+      .doc('male')
+      .collection(collection)
+      .get()
+
+    malePlayersFromFirestore.forEach((player) => {
+      playersToPage.push({
+        gender: 'male',
+        introduction: '',
+        photoURL: '',
+        username: '',
+        collection,
+        id: player.id,
+        ...player.data(),
+      })
     })
-  })
+  }
+
+  for (const collection of femalePlayersCollectionList) {
+    const femalePlayersFromFirestore = await db
+      .collection(sport)
+      .doc('female')
+      .collection(collection)
+      .get()
+
+    femalePlayersFromFirestore.forEach((player) => {
+      playersToPage.push({
+        gender: 'female',
+        introduction: '',
+        photoURL: '',
+        username: '',
+        collection,
+        id: player.id,
+        ...player.data(),
+      })
+    })
+  }
 
   context.res.setHeader('Cache-Control', 'max-age=86400, public')
 

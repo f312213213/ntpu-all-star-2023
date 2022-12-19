@@ -28,6 +28,7 @@ const ScreenSinglePlayer = () => {
         sport: router.query.sport,
         gender: router.query.gender,
         playerId: router.query.playerId,
+        collection: router.query.collection,
       },
     })
     if (isSuccess) { setPlayerData(data.data.player) }

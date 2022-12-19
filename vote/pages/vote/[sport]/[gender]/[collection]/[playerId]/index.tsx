@@ -20,6 +20,7 @@ const PlayerSinglePage = ({
       customMeta={{
         title: `${username} 的投票頁面 - 北大明星賽 2023`,
         description: introduction,
+        image: photoURL,
       }}
     >
 
@@ -42,8 +43,8 @@ const PlayerSinglePage = ({
 export default PlayerSinglePage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { sport, gender, playerId } = context.query as { sport: string, gender: string, playerId: string }
-  const playerFromFirestore = await db.collection(sport).doc(gender).collection('candidates').doc(playerId).get()
+  const { sport, gender, playerId, collection = 'candidates' } = context.query as { sport: string, gender: string, playerId: string, collection: string }
+  const playerFromFirestore = await db.collection(sport).doc(gender).collection(collection).doc(playerId).get()
   context.res.setHeader('Cache-Control', 'max-age=10, public')
   if (!playerFromFirestore.exists) {
     return {
