@@ -22,7 +22,7 @@ const ScreenSinglePlayer = () => {
 
   const getSinglePlayer = async () => {
     const { data, isSuccess } = await apiHandler({
-      apiRoute: '/api/singlePlayer',
+      apiRoute: '/api/player/singlePlayer',
       needAuth: false,
       searchParam: {
         sport: router.query.sport,
@@ -54,7 +54,7 @@ const ScreenSinglePlayer = () => {
         <meta content={introduction} name={'description'} />
       </Head>
       <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 flex justify-center items-center top-0 left-0'} ref={outRef} onClick={handleClose} >
-        <div className={'flex flex-col justify-center items-center space-y-3 bg-white w-8/12 rounded-xl md:rounded-none md:w-3/5 md:h-screen p-4 overflow-y-auto'}>
+        <div className={'flex flex-col justify-center items-center space-y-3 bg-white w-8/12 rounded-xl md:rounded-none md:w-3/5 md:h-screen p-4'}>
           <div className={'card w-full '}>
             <figure className={'relative h-52'}>
               <Image

@@ -6,18 +6,16 @@ import { MdOutlineHowToVote } from 'react-icons/md'
 import { Menu, Transition } from '@headlessui/react'
 import { RiArrowDropDownLine } from 'react-icons/ri'
 import { isLoginSelector } from '@/vote/features/user/selector'
+import { loginAction, logoutAction } from '@/vote/features/user/services'
 import { openDialog } from '@/vote/features/app/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import Link from 'next/link'
 import React, { Fragment } from 'react'
-import useIsMobile from '@/vote/hooks/useIsMobile'
-import useLoginAction from '@/vote/hooks/login/useLoginAction'
 
 const DropdownSiteMenu = () => {
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
   const isLogin = useAppSelector(isLoginSelector)
-  const { loginAction, logoutAction } = useLoginAction()
 
   return (
     <div className={' text-right'}>
@@ -50,7 +48,7 @@ const DropdownSiteMenu = () => {
                           placeholder: '密碼',
                         },
                       ],
-                      onConfirm: (inputState: ILoginAction) => loginAction(inputState),
+                      onConfirm: (inputState: ILoginAction) => dispatch(loginAction(inputState)),
                     }))
                   }}
                   className={'btn btn-ghost'}>
@@ -134,7 +132,7 @@ const DropdownSiteMenu = () => {
                       className={`${
                         active ? 'bg-violet-500 text-white' : 'text-gray-900'
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                      onClick={logoutAction}
+                      onClick={() => dispatch(logoutAction())}
                     >
                       <FiLogIn
                         className={'mr-2 h-5 w-5 text-violet-400'}
@@ -165,7 +163,7 @@ const DropdownSiteMenu = () => {
                               placeholder: '密碼',
                             },
                           ],
-                          onConfirm: (inputState: ILoginAction) => loginAction(inputState),
+                          onConfirm: (inputState: ILoginAction) => dispatch(loginAction(inputState)),
                         }))
                       }}
                     >

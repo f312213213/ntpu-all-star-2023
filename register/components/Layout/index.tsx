@@ -20,7 +20,7 @@ interface IPageProps {
 const Layout = ({ children, customMeta }: IPageProps) => {
   const router = useRouter()
   const meta = {
-    title: '首頁 - 北大明星賽 2023',
+    title: '首頁 - 註冊北大明星賽 2023',
     description: '',
     image: '',
     type: 'website',

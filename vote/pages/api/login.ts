@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase-admin/auth'
-import admin from '@/vote/lib/firebase'
+import admin, { db } from '@/vote/lib/firebase'
 import fetch from 'node-fetch'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -45,11 +45,10 @@ const loginRequestHandler = async (
           photoURL,
           uid,
         } = queryResult
-        const token = await getAuth().createCustomToken(uid)
+        const customToken = await getAuth().createCustomToken(uid)
         return res
-          .setHeader('Set-Cookie', `stdla=${token}; Max-Age=${5 * DAY}; path=/`)
           .status(200)
-          .json({ status: '0', user: { displayName, photoURL, uid, username } })
+          .json({ status: '0', user: { displayName, photoURL, uid, username, customToken } })
       }
     } catch (error: any) {
       if (!/ no user record corresponding/u.test(error.message)) {
@@ -69,12 +68,18 @@ const loginRequestHandler = async (
         displayName,
         photoURL = '',
         uid,
+        email,
       } = createResult
-      const token = await getAuth().createCustomToken(uid)
+      const customToken = await getAuth().createCustomToken(uid)
+      await db.collection('users').doc(uid).set({
+        displayName,
+        photoURL,
+        uid,
+        email,
+      })
       return res
-        .setHeader('Set-Cookie', `stdla=${token}; Max-Age=${5 * DAY}; path=/`)
         .status(200)
-        .json({ status: '0', user: { displayName, photoURL, uid, username } })
+        .json({ status: '0', user: { displayName, photoURL, uid, username, customToken } })
     } catch (error) {
       console.error(error)
     }

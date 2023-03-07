@@ -8,12 +8,14 @@ interface IProps {
   username: string
   introduction: string
   photoURL: string
+  voteCount: number
 }
 
 const PlayerSinglePage = ({
   username,
   introduction,
   photoURL,
+  voteCount,
 }: IProps) => {
   return (
     <Layout
@@ -36,6 +38,7 @@ const PlayerSinglePage = ({
 
         {username}
       </p>
+      <p>{voteCount} 票</p>
     </Layout>
   )
 }
@@ -57,6 +60,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       username: player?.username,
       introduction: player?.introduction,
       photoURL: player?.photoURL,
+      voteCount: player?.voteCount,
     },
   }
 }

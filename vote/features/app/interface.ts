@@ -61,6 +61,9 @@ export interface IState {
   backdrop: {
     show: boolean
   }
+  breadcrumbConfig: {
+
+  }
 }
 
 export interface IOpenDialogAction {

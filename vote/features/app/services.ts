@@ -1,21 +1,26 @@
-import { closeBackdrop, initApp, showBackdrop } from '@/vote/features/app/slice'
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { AppDispatch, RootState } from '@/vote/features/store'
+import { closeBackdrop, showBackdrop } from '@/vote/features/app/slice'
+import { getAuth, signInWithCustomToken } from 'firebase/auth'
+import { getCookie, setCookie } from '@/vote/utilis/auth'
+import { userLogin } from '@/vote/features/user/slice'
+import apiRequest, { setupApiCallerAuth } from '@/vote/apis/apiClient'
 
-export const getNumber = createAsyncThunk(
-  'app/getNumber',
-  async (input, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    dispatch(showBackdrop())
-    try {
-      const response = await fetch('https://counter-tmqvi7b1k-f312213213.vercel.app/')
-      dispatch(closeBackdrop())
-      if (!response.ok) {
-        return rejectWithValue(response.status)
-      }
-      const number = await response.json()
-      fulfillWithValue(number)
-    } catch (err: any) {
-      rejectWithValue(err.message)
-    }
-    dispatch(initApp())
-  }
-)
+export const initApp = () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const auth = getAuth()
+  const customToken = getCookie('customToken')
+  if (!customToken) return
+  dispatch(showBackdrop())
+  const signInResult = await signInWithCustomToken(auth, customToken)
+  const user = signInResult.user
+  const accessToken = await user.getIdToken()
+  setCookie('accessToken', accessToken, 5)
+  dispatch(userLogin(user))
+  setupApiCallerAuth({ accessToken })
+  const { data } = await apiRequest({
+    endpoint: '/api/me',
+  })
+  // get accessToken from cookie
+  const idToken = getCookie('accessToken')
+
+  dispatch(closeBackdrop())
+}

@@ -10,12 +10,14 @@ const HomePage = () => {
         description: '快叫你的同學來投票，一起選出這屆的明星賽隊長！',
       }}
     >
-      <Link
-        href={'/?user=123'}
-        as={'/123'}
-      >
-        home
-      </Link>
+      <div className={'flex justify-center'}>
+        <Link
+          href={'/vote'}
+          className={'btn btn-accent'}
+        >
+          投票！
+        </Link>
+      </div>
     </Layout>
   )
 }

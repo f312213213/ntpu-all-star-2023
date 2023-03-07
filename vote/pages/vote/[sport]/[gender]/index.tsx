@@ -36,12 +36,14 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
             return (
               <CandidateCard
                 key={player.id}
-                playerId={player.id}
-                img={player.photoURL}
-                name={player.username}
-                description={player.introduction}
+                id={player.id}
+                photoURL={player.photoURL}
+                username={player.username}
+                introduction={player.introduction}
                 gender={player.gender}
                 collection={player.collection}
+                voteCount={player.voteCount}
+                sportType={sportType === '籃球' ? ESports.BASKETBALL : ESports.VOLLEYBALL}
               />
             )
           })
@@ -67,6 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   playersFromFirestore.forEach((player) => {
     playersToPage.push({
+      voteCount: 0,
       gender,
       introduction: '',
       photoURL: '',
@@ -83,7 +86,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       // @ts-ignore
       sportType: sportMap[sport],
-      players: playersToPage,
+
+      players: playersToPage.sort((playerA, playerB) => {
+        if (playerA.voteCount > playerB.voteCount) return -1
+        if (playerA.voteCount < playerB.voteCount) return 1
+        return 0
+      }),
     },
   }
 }

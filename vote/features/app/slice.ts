@@ -28,6 +28,9 @@ const initialState: IState = {
   backdrop: {
     show: false,
   },
+  breadcrumbConfig: {
+
+  },
 }
 
 const appSlice = createSlice({

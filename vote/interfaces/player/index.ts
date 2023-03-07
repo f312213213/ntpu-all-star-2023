@@ -5,4 +5,5 @@ export interface IPlayer {
   username: string
   gender: string
   collection: string
+  voteCount: number
 }

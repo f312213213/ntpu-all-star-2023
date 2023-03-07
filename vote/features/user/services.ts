@@ -1,24 +1,59 @@
+import { AppDispatch, RootState } from '@/vote/features/store'
 import { EDialogType, EToastType } from '@/vote/features/app/interface'
 import { ILoginAction } from '@/vote/features/user/interface'
-import { closeBackdrop, closeDialog, initApp, openToast, showBackdrop } from '@/vote/features/app/slice'
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { userLogin } from '@/vote/features/user/slice'
+import { closeBackdrop, closeDialog, openToast, showBackdrop } from '@/vote/features/app/slice'
+import { deleteCookie, getCookie, setCookie } from '@/vote/utilis/auth'
+import { getAuth, signInWithCustomToken } from 'firebase/auth'
+import { userLogin, userLogout } from '@/vote/features/user/slice'
+import apiRequest, { EApiMethod, setupApiCallerAuth } from '@/vote/apis/apiClient'
 
-export const getNumber = createAsyncThunk(
-  'app/getNumber',
-  async (input, { dispatch, getState, rejectWithValue, fulfillWithValue }) => {
-    dispatch(showBackdrop())
-    try {
-      const response = await fetch('https://counter-tmqvi7b1k-f312213213.vercel.app/')
-      dispatch(closeBackdrop())
-      if (!response.ok) {
-        return rejectWithValue(response.status)
-      }
-      const number = await response.json()
-      fulfillWithValue(number)
-    } catch (err: any) {
-      rejectWithValue(err.message)
-    }
-    dispatch(initApp())
+export const loginAction = (inputState: ILoginAction) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch(showBackdrop())
+  const auth = getAuth()
+  try {
+    const { data } = await apiRequest({
+      endpoint: '/api/login',
+      method: EApiMethod.POST,
+      data: inputState,
+    })
+
+    const { user: { customToken } } = data
+
+    const signInResult = await signInWithCustomToken(auth, customToken)
+    const user = signInResult.user
+    const accessToken = await user.getIdToken()
+    setCookie('customToken', customToken, 5)
+    setCookie('accessToken', accessToken, 5)
+
+    dispatch(userLogin(user))
+
+    setupApiCallerAuth({ accessToken })
+
+    dispatch(closeDialog({
+      type: EDialogType.INPUT,
+    }))
+
+    dispatch(openToast({
+      type: EToastType.SUCCESS,
+      title: '登入成功',
+    }))
+  } catch (e) {
+    console.log(e)
+    dispatch(openToast({
+      type: EToastType.ERROR,
+      title: '錯誤的帳號密碼',
+    }))
   }
-)
+  dispatch(closeBackdrop())
+}
+
+export const logoutAction = () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch(showBackdrop())
+  dispatch(userLogout())
+  deleteCookie('accessToken')
+  deleteCookie('customToken')
+  setTimeout(() => {
+    dispatch(closeBackdrop())
+    window.location.reload()
+  }, 300)
+}

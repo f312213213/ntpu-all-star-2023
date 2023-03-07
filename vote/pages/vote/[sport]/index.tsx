@@ -5,10 +5,13 @@ import { db } from '@/vote/lib/firebase'
 import { openDialog } from '@/vote/features/app/slice'
 import { useAppDispatch } from '@/vote/features/store'
 import { useRouter } from 'next/router'
+import Breadcrumbs from '@/vote/components/Breadcrumbs'
 import CandidateCard from '@/vote/components/Cards/CandidateCard'
 import Layout from '@/vote/components/Layout'
+import PlayerSearchBar from '@/vote/components/PlayerSearchBar'
 import React, { useEffect, useState } from 'react'
 import ScreenSinglePlayer from '@/vote/components/ScreenSinglePlayer'
+import SearchPlayer from '@/vote/components/SearchPlayer'
 import gender from '@/vote/pages/vote/[sport]/[gender]'
 
 interface IProps {
@@ -29,18 +32,26 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
         router?.query?.playerId && <ScreenSinglePlayer />
       }
 
+      <SearchPlayer />
+
+      <Breadcrumbs />
+
+      <PlayerSearchBar />
+
       <div className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10'}>
         {
           players.map((player) => {
             return (
               <CandidateCard
                 key={player.id}
-                playerId={player.id}
-                img={player.photoURL}
-                name={player.username}
-                description={player.introduction}
+                id={player.id}
+                photoURL={player.photoURL}
+                username={player.username}
+                introduction={player.introduction}
                 gender={player.gender}
                 collection={player.collection}
+                voteCount={player.voteCount}
+                sportType={sportType === '籃球' ? ESports.BASKETBALL : ESports.VOLLEYBALL}
               />
             )
           })
@@ -53,7 +64,7 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
 export default PlayerCategoryPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { sport, gender } = context.query as { sport: string, gender: string }
+  const { sport } = context.query as { sport: string }
 
   const femalePlayersCollectionList: string[] = []
   const malePlayersCollectionList: string[] = []
@@ -68,7 +79,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const malePlayersCollectionListFromFirestore = await db
     .collection(sport)
-    .doc('female')
+    .doc('male')
     .listCollections()
 
   malePlayersCollectionListFromFirestore.forEach(col => malePlayersCollectionList.push(col.id))
@@ -78,10 +89,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       .collection(sport)
       .doc('male')
       .collection(collection)
+      .orderBy('voteCount')
       .get()
 
     malePlayersFromFirestore.forEach((player) => {
       playersToPage.push({
+        voteCount: 0,
         gender: 'male',
         introduction: '',
         photoURL: '',
@@ -98,10 +111,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       .collection(sport)
       .doc('female')
       .collection(collection)
+      .orderBy('voteCount')
       .get()
 
     femalePlayersFromFirestore.forEach((player) => {
       playersToPage.push({
+        voteCount: 0,
         gender: 'female',
         introduction: '',
         photoURL: '',
@@ -119,7 +134,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       // @ts-ignore
       sportType: sportMap[sport],
-      players: playersToPage,
+      players: playersToPage.sort((playerA, playerB) => {
+        if (playerA.voteCount > playerB.voteCount) return -1
+        if (playerA.voteCount < playerB.voteCount) return 1
+        return 0
+      }),
     },
   }
 }
