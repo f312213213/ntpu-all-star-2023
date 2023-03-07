@@ -1,9 +1,8 @@
 import { IPlayer } from '@/vote/interfaces/player'
 import { db } from '@/vote/lib/firebase'
 import { firestore } from 'firebase-admin'
-import firebase from 'firebase/compat'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import FieldValue = firebase.firestore.FieldValue;
+import FieldValue = firestore.FieldValue;
 
 interface Data {
   status: string
