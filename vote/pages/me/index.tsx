@@ -1,14 +1,8 @@
 import { GetServerSideProps } from 'next'
-import { db } from '@/vote/lib/firebase'
 
 import { useAppSelector } from '@/vote/features/store'
 import { userInfoSelector } from '@/vote/features/user/selector'
 import Layout from '@/vote/components/Layout'
-import React, { useEffect } from 'react'
-
-interface IProps {
-  stdla: string
-}
 
 const UserPage = () => {
   const userInfo = useAppSelector(userInfoSelector)
@@ -27,8 +21,8 @@ const UserPage = () => {
 export default UserPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { stdla } = context.req.cookies
-  if (!stdla) {
+  const { accessToken } = context.req.cookies
+  if (!accessToken) {
     return {
       redirect: {
         permanent: true,
@@ -38,7 +32,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   return {
     props: {
-      stdla,
     },
   }
 }

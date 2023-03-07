@@ -6,6 +6,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 interface Data {
   status: string
   user?: any
+  error?: any
 }
 
 interface IRequestBody extends NextApiRequest {
@@ -36,6 +37,7 @@ const loginRequestHandler = async (
   })
   const responseText = await response.text()
 
+  // 學校系統如果有回傳 window.open 相關字樣則為登入成功 & firebase lib init 完成
   if (responseText.indexOf('window.open') !== -1 && admin.app.length) {
     try {
       const queryResult = await getAuth().getUserByEmail(`s${username}@gm.ntpu.edu.tw`)
@@ -81,7 +83,9 @@ const loginRequestHandler = async (
         .status(200)
         .json({ status: '0', user: { displayName, photoURL, uid, username, customToken } })
     } catch (error) {
-      console.error(error)
+      return res
+        .status(403)
+        .json({ status: '-1' })
     }
   }
   return res

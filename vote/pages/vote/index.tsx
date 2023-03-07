@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   context.res.setHeader('Cache-Control', 'max-age=10, public')
   const sportTypes: string[] = []
   collectionsFromFirestore.forEach(collection => {
-    if (collection.id !== 'user') {
+    if (collection.id !== 'users') {
       sportTypes.push(collection.id)
     }
   })

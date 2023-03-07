@@ -27,7 +27,6 @@ const userDataRequestHandler = async (
     const userId = decodedToken.uid
     // get user data by userId get from jwt
     const playerFromFirestore = await db.collection('users').doc(userId).get()
-    console.log(userId, playerFromFirestore.data())
     return res.status(200).json({ status: '0', user: playerFromFirestore.data() })
   } catch (e) {
     return res.status(400).json({ status: '-1' })
