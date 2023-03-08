@@ -5,10 +5,10 @@ const usePageScrollLock = (lock: boolean) => {
     if (lock) {
       document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.removeProperty('overflow')
     }
     return () => {
-      document.body.style.overflow = 'unset'
+      document.body.style.removeProperty('overflow')
     }
   }, [lock])
 }

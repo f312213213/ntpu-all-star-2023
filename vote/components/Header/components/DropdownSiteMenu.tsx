@@ -26,7 +26,7 @@ const DropdownSiteMenu = () => {
               ? (
                 <Menu.Button className={'btn btn-ghost inline-flex w-full justify-center bg-opacity-20 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'}>
                   <p className={'flex gap-1 items-center'}>
-                    Hi, {user.user.username} <span className={'scale-125'}><RiArrowDropDownLine /></span>
+                    Hi, {user.user.displayName} <span className={'scale-125'}><RiArrowDropDownLine /></span>
                   </p>
                 </Menu.Button>
                 )

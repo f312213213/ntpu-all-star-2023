@@ -7,6 +7,7 @@ import { currentPlayerIsVotedSelector } from '@/vote/features/user/selector'
 import { updateUserVoteRecord } from '@/vote/features/user/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import apiRequest, { EApiMethod } from '@/vote/apis/apiClient'
@@ -17,6 +18,7 @@ interface IProps extends IPlayer {
 
 const CandidateCard = ({ id, introduction, photoURL, username, gender, collection, voteCount, sportType }: IProps) => {
   const router = useRouter()
+  const [count, setCount] = useState(voteCount)
   const currentPlayerIsVoted = useAppSelector(currentPlayerIsVotedSelector(id))
   const dispatch = useAppDispatch()
   const copyPlayerLink = () => {
@@ -40,7 +42,13 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
       },
     })
     if (success) {
-      dispatch(updateUserVoteRecord({ id }))
+      setCount((prevState) => prevState + 1)
+      dispatch(updateUserVoteRecord({
+        id,
+        gender,
+        collection,
+        sport: sportType,
+      }))
     }
 
     dispatch(closeBackdrop())
@@ -67,7 +75,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
           {username}
         </h2>
         <p>
-          {voteCount} 票
+          {count} 票
         </p>
         <p className={'truncate'}>
           {introduction}
@@ -78,7 +86,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
             onClick={handleVote}
             className={'btn btn-primary'}
           >
-            投票
+            {currentPlayerIsVoted ? '已投過' : '投票' }
           </button>
           <Link
             href={{

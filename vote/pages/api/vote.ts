@@ -34,9 +34,16 @@ const VoteRequestHandler = async (
     if (!userId) throw Error('Invalid token.')
 
     const { sport, gender, id: playerId, collection = 'candidates' } = req.body
-    const playerFirestoreRef = await db.collection(sport).doc(gender).collection(collection).doc(playerId)
 
-    const userFirestoreRef = await db.collection('users').doc(userId)
+    const playerFirestoreRef = await db
+      .collection(sport)
+      .doc(gender)
+      .collection(collection)
+      .doc(playerId)
+
+    const userFirestoreRef = await db
+      .collection('users')
+      .doc(userId)
 
     const userFirestoreObject = (await userFirestoreRef.get()).data()
 

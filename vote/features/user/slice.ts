@@ -7,7 +7,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 const initialState: IState = {
   status: EUserStatus.INITIAL,
   user: {
-    username: '',
+    displayName: '',
     uid: '',
   },
 }
@@ -25,11 +25,18 @@ const appSlice = createSlice({
       state.status = EUserStatus.INITIAL
     },
     updateUserVoteRecord: (state, action) => {
-      const { id } = action.payload
+      const {
+        id,
+        sport,
+        gender,
+        collection,
+      } = action.payload
       state.user.votedPlayer = {
         ...state.user.votedPlayer,
         [id]: true,
       }
+      // @ts-ignore
+      state.user[`${sport}-${gender}-${collection}-voteCount`] = state.user[`${sport}-${gender}-${collection}-voteCount`] + 1
     },
   },
 })

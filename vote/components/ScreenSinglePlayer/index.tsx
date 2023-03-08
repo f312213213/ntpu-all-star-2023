@@ -55,7 +55,7 @@ const ScreenSinglePlayer = () => {
         <meta content={introduction} name={'description'} />
       </Head>
       <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 flex justify-center items-center top-0 left-0'} ref={outRef} onClick={handleClose} >
-        <div className={'flex flex-col justify-center items-center space-y-3 bg-white w-8/12 rounded-xl md:rounded-none md:w-3/5 md:h-screen p-4'}>
+        <div className={'flex flex-col justify-center items-center space-y-3 bg-white w-8/12 rounded-xl md:rounded-none md:w-2/5 md:h-screen p-4'}>
           <div className={'card w-full '}>
             <figure className={'relative h-52'}>
               <Image
@@ -66,10 +66,10 @@ const ScreenSinglePlayer = () => {
               />
             </figure>
             <div className={'card-body'}>
-              <h2 className={'card-title'}>
+              <h2 className={'card-title text-black'}>
                 {username}
               </h2>
-              <p>
+              <p className={'text-gray-700'}>
                 {introduction}
               </p>
             </div>
