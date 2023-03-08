@@ -12,6 +12,9 @@ export interface IState {
     uid: string
     displayName?: string
     photoURL?: string
+    votedPlayer?: {
+      [key: string]: boolean
+    }
   }
 }
 

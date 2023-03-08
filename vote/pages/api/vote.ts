@@ -40,7 +40,7 @@ const VoteRequestHandler = async (
 
     const userFirestoreObject = (await userFirestoreRef.get()).data()
 
-    if (userFirestoreObject?.votedPlayer[playerId]) throw Error('Duplicate vote action.')
+    if (userFirestoreObject?.votedPlayer?.[playerId]) throw Error('Duplicate vote action.')
 
     // 該 player 的投票數加 1
     await playerFirestoreRef.update({
@@ -57,6 +57,7 @@ const VoteRequestHandler = async (
       voteCount: FieldValue.increment(1),
       [`${sport}-${gender}-${collection}-voteCount`]: FieldValue.increment(1),
       votedPlayer: {
+        ...userFirestoreObject?.votedPlayer,
         [playerId]: true,
       },
     })

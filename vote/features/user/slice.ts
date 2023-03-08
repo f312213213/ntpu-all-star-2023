@@ -24,12 +24,20 @@ const appSlice = createSlice({
       state.user = initialState.user
       state.status = EUserStatus.INITIAL
     },
+    updateUserVoteRecord: (state, action) => {
+      const { id } = action.payload
+      state.user.votedPlayer = {
+        ...state.user.votedPlayer,
+        [id]: true,
+      }
+    },
   },
 })
 
 export const {
   userLogin,
   userLogout,
+  updateUserVoteRecord,
 } = appSlice.actions
 
 export default appSlice
