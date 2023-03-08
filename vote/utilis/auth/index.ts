@@ -25,3 +25,10 @@ export const setCookie = (name: string, value: string | number, days: number) =>
 export const deleteCookie = (name: string) => {
   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
 }
+
+export const getJwtFromAuthorizationHeader = (authorizationCode: string) => {
+  if (!authorizationCode) throw Error('Invalid token.')
+  const jwt = authorizationCode.split(' ')[1]
+  if (!jwt) throw Error('Invalid token.')
+  return jwt
+}

@@ -2,17 +2,12 @@ import { ESports, sportMap } from '@/vote/constants/sports'
 import { GetServerSideProps } from 'next'
 import { IPlayer } from '@/vote/interfaces/player'
 import { db } from '@/vote/lib/firebase'
-import { openDialog } from '@/vote/features/app/slice'
-import { useAppDispatch } from '@/vote/features/store'
 import { useRouter } from 'next/router'
-import Breadcrumbs from '@/vote/components/Breadcrumbs'
 import CandidateCard from '@/vote/components/Cards/CandidateCard'
 import Layout from '@/vote/components/Layout'
 import PlayerSearchBar from '@/vote/components/PlayerSearchBar'
-import React, { useEffect, useState } from 'react'
 import ScreenSinglePlayer from '@/vote/components/ScreenSinglePlayer'
 import SearchPlayer from '@/vote/components/SearchPlayer'
-import gender from '@/vote/pages/vote/[sport]/[gender]'
 
 interface IProps {
   sportType: string
@@ -33,8 +28,6 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
       }
 
       <SearchPlayer />
-
-      <Breadcrumbs />
 
       <PlayerSearchBar />
 

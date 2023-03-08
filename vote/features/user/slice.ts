@@ -17,17 +17,8 @@ const appSlice = createSlice({
   initialState,
   reducers: {
     userLogin: (state, action) => {
-      const {
-        uid = '',
-        username = '',
-        photoURL = '',
-        displayName = '',
-      } = action.payload
       state.status = EUserStatus.SUCCESS
-      state.user.username = displayName
-      state.user.photoURL = photoURL
-      state.user.uid = uid
-      state.user.displayName = displayName
+      state.user = action.payload
     },
     userLogout: (state) => {
       state.user = initialState.user

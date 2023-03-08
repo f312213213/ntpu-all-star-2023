@@ -48,9 +48,12 @@ const loginRequestHandler = async (
           uid,
         } = queryResult
         const customToken = await getAuth().createCustomToken(uid)
+
+        const userRef = await db.collection('users').doc(uid).get()
+        const userObject = userRef.data()
         return res
           .status(200)
-          .json({ status: '0', user: { displayName, photoURL, uid, username, customToken } })
+          .json({ status: '0', user: { customToken, ...userObject } })
       }
     } catch (error: any) {
       if (!/ no user record corresponding/u.test(error.message)) {
@@ -72,16 +75,19 @@ const loginRequestHandler = async (
         uid,
         email,
       } = createResult
-      const customToken = await getAuth().createCustomToken(uid)
-      await db.collection('users').doc(uid).set({
+
+      const initialUser = {
         displayName,
         photoURL,
         uid,
         email,
-      })
+      }
+
+      const customToken = await getAuth().createCustomToken(uid)
+      await db.collection('users').doc(uid).set(initialUser)
       return res
         .status(200)
-        .json({ status: '0', user: { displayName, photoURL, uid, username, customToken } })
+        .json({ status: '0', user: { customToken, ...initialUser } })
     } catch (error) {
       return res
         .status(403)

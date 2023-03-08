@@ -24,7 +24,7 @@ export const loginAction = (inputState: ILoginAction) => async (dispatch: AppDis
     const accessToken = await user.getIdToken()
     setCookie('accessToken', accessToken, 1 / 24)
 
-    dispatch(userLogin(user))
+    dispatch(userLogin(data.user))
 
     setupApiCallerAuth({ accessToken })
 
