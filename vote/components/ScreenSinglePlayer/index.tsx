@@ -3,12 +3,13 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import useApiHandler from '@/vote/hooks/useApiHandler'
+import apiRequest from '@/vote/apis/apiClient'
+import useIsMounted from '@/vote/hooks/useIsMounted'
 import usePageScrollLock from '@/vote/hooks/usePageScrollLock'
 
 const ScreenSinglePlayer = () => {
-  const apiHandler = useApiHandler()
   const router = useRouter()
+  const isMounted = useIsMounted()
   const outRef = React.useRef<HTMLDivElement | null>(null)
   const [playerData, setPlayerData] = useState<IPlayer | null>(null)
 
@@ -21,25 +22,25 @@ const ScreenSinglePlayer = () => {
   }
 
   const getSinglePlayer = async () => {
-    const { data, isSuccess } = await apiHandler({
-      apiRoute: '/api/player/singlePlayer',
-      needAuth: false,
-      searchParam: {
+    const { data, success } = await apiRequest({
+      endpoint: '/api/player/singlePlayer',
+      params: {
         sport: router.query.sport,
         gender: router.query.gender,
         playerId: router.query.playerId,
         collection: router.query.collection,
       },
     })
-    if (isSuccess) { setPlayerData(data.data.player) }
+    if (success) { setPlayerData(data.data.player) }
   }
 
   useEffect(() => {
+    if (!isMounted) return
     getSinglePlayer()
     return () => {
       setPlayerData(null)
     }
-  }, [router?.query?.playerId])
+  }, [isMounted, router?.query?.playerId])
 
   if (!router?.query?.playerId) return null
 
