@@ -1,3 +1,5 @@
+import { getAuth } from 'firebase-admin/auth'
+import { getJwtFromAuthorizationHeader } from '@/vote/utilis/auth'
 import admin from 'firebase-admin'
 
 try {
@@ -21,6 +23,15 @@ try {
   if (!/already exists/u.test(error.message)) {
     console.error('Firebase admin initialization error', error.stack)
   }
+}
+
+export const getUserIdFromAuthorizationHeader = async (authorizationCode = '') => {
+  const jwt = getJwtFromAuthorizationHeader(authorizationCode)
+  // get userId from jwt
+  const decodedToken = await getAuth().verifyIdToken(jwt)
+  const userId = decodedToken.uid
+  if (!userId) throw Error('Invalid token.')
+  return userId
 }
 
 export const db = admin.firestore()

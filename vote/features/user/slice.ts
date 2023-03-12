@@ -36,7 +36,7 @@ const appSlice = createSlice({
         [id]: true,
       }
       // @ts-ignore
-      state.user[`${sport}-${gender}-${collection}-voteCount`] = state.user[`${sport}-${gender}-${collection}-voteCount`] + 1
+      state.user[`${sport}-${gender}-${collection}-voteCount`] = (state.user[`${sport}-${gender}-${collection}-voteCount`] || 0) + 1
     },
   },
 })

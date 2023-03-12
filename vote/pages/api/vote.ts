@@ -1,11 +1,9 @@
 import { IPlayer } from '@/vote/interfaces/player'
-import { db } from '@/vote/lib/firebase'
+import { db, getUserIdFromAuthorizationHeader } from '@/vote/lib/firebase'
 import { firestore } from 'firebase-admin'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import FieldValue = firestore.FieldValue;
 import { ESports } from '@/vote/constants/sports'
-import { getAuth } from 'firebase-admin/auth'
-import { getJwtFromAuthorizationHeader } from '@/vote/utilis/auth'
 
 interface Data {
   status: string
@@ -27,11 +25,7 @@ const VoteRequestHandler = async (
   res: NextApiResponse<Data>
 ) => {
   try {
-    const jwt = getJwtFromAuthorizationHeader(req?.headers?.authorization || '')
-    // get userId from jwt
-    const decodedToken = await getAuth().verifyIdToken(jwt)
-    const userId = decodedToken.uid
-    if (!userId) throw Error('Invalid token.')
+    const userId = await getUserIdFromAuthorizationHeader(req.headers.authorization)
 
     const { sport, gender, id: playerId, collection = 'candidates' } = req.body
 

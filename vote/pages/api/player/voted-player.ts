@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 interface Data {
   status: string
-  user?: any
+  voted?: any[]
 }
 
 interface IRequestBody extends NextApiRequest {
@@ -13,7 +13,7 @@ interface IRequestBody extends NextApiRequest {
   }
 }
 
-const userDataRequestHandler = async (
+const votedPlayerRequestHandler = async (
   req: IRequestBody,
   res: NextApiResponse<Data>
 ) => {
@@ -21,10 +21,11 @@ const userDataRequestHandler = async (
     const userId = await getUserIdFromAuthorizationHeader(req.headers.authorization)
     // get user data by userId get from jwt
     const userRef = await db.collection('users').doc(userId).get()
-    return res.status(200).json({ status: '0', user: userRef.data() })
+    const userObject = userRef.data()
+    return res.status(200).json({ status: '0', voted: Object.keys(userObject?.votedPlayer) })
   } catch (e) {
     return res.status(400).json({ status: '-1' })
   }
 }
 
-export default userDataRequestHandler
+export default votedPlayerRequestHandler

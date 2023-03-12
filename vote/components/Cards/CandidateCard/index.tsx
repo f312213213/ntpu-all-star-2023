@@ -3,7 +3,7 @@ import { ESports } from '@/vote/constants/sports'
 import { EToastType } from '@/vote/features/app/interface'
 import { IPlayer } from '@/vote/interfaces/player'
 import { closeBackdrop, openToast, showBackdrop } from '@/vote/features/app/slice'
-import { currentPlayerIsVotedSelector } from '@/vote/features/user/selector'
+import { currentPlayerIsVotedSelector, isLoginSelector } from '@/vote/features/user/selector'
 import { updateUserVoteRecord } from '@/vote/features/user/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { useRouter } from 'next/router'
@@ -19,6 +19,7 @@ interface IProps extends IPlayer {
 const CandidateCard = ({ id, introduction, photoURL, username, gender, collection, voteCount, sportType }: IProps) => {
   const router = useRouter()
   const [count, setCount] = useState(voteCount)
+  const isLogin = useAppSelector(isLoginSelector)
   const currentPlayerIsVoted = useAppSelector(currentPlayerIsVotedSelector(id))
   const dispatch = useAppDispatch()
   const copyPlayerLink = () => {
@@ -82,7 +83,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
         </p>
         <div className={'card-actions justify-between items-baseline'}>
           <button
-            disabled={currentPlayerIsVoted}
+            disabled={!isLogin || currentPlayerIsVoted}
             onClick={handleVote}
             className={'btn btn-primary'}
           >

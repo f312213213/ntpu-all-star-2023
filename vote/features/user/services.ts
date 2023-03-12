@@ -6,6 +6,7 @@ import { deleteCookie, setCookie } from '@/vote/utilis/auth'
 import { getAuth, signInWithCustomToken } from 'firebase/auth'
 import { userLogin, userLogout } from '@/vote/features/user/slice'
 import apiRequest, { EApiMethod, setupApiCallerAuth } from '@/vote/apis/apiClient'
+import omit from 'lodash/omit'
 
 export const loginAction = (inputState: ILoginAction) => async (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch(showBackdrop())
@@ -24,7 +25,7 @@ export const loginAction = (inputState: ILoginAction) => async (dispatch: AppDis
     const accessToken = await user.getIdToken()
     setCookie('accessToken', accessToken, 1 / 24)
 
-    dispatch(userLogin(data.user))
+    dispatch(userLogin(omit(data.user, 'customToken')))
 
     setupApiCallerAuth({ accessToken })
 
