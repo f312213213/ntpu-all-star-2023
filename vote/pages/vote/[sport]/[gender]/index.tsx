@@ -28,10 +28,6 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
         description: `所有參加${sportType}投票的${genderMap[gender]}同學都在這！`,
       }}
     >
-      {
-        router?.query?.playerId && <ScreenSinglePlayer />
-      }
-
       <div className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10'}>
         {
           players.map((player) => {
