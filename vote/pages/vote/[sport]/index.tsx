@@ -23,9 +23,6 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
         description: `所有參加${sportType}投票的同學都在這！`,
       }}
     >
-      {
-        router?.query?.playerId && <ScreenSinglePlayer />
-      }
 
       <SearchPlayer />
 
