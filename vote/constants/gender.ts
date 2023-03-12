@@ -1,4 +1,9 @@
+export enum genderMap {
+  female = '女',
+  male = '男',
+}
+
 export enum EGender {
-  FEMALE = '女',
-  MALE = '男',
+  FEMALE = 'female',
+  MALE = 'male',
 }
