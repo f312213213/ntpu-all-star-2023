@@ -9,6 +9,7 @@ import { loginAction } from '@/vote/features/user/services'
 import { openDialog } from '@/vote/features/app/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import BottomNavLink from '@/vote/components/Footer/components/BottomNavLink'
+import Tooltip from '@/vote/components/Tooltip'
 import useIsMobile from '@/vote/hooks/useIsMobile'
 
 const Footer = () => {
@@ -70,9 +71,16 @@ const Footer = () => {
       <div className={'flex justify-between w-full flex-col sm:flex-row items-center'}>
         <p>
           Design and build by {' '}
-          <a className={'text-blue-50'} href={'https://chiendavid.com'} target={'_blank'} rel={'noreferrer'}>
-            David
-          </a>
+          <Tooltip
+            trigger={'US!'}
+            content={
+              <>
+                <a href={'https://chiendavid.com'} target={'_blank'} rel={'noreferrer'}>
+                  David
+                </a>
+              </>
+            }
+          />
         </p>
         <p>Copyright © 2023 - All right reserved</p>
       </div>
