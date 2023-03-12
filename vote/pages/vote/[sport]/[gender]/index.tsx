@@ -59,6 +59,16 @@ export default PlayerCategoryPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sport, gender, collection = 'candidates' } = context.query as { sport: string, gender: string, collection: string }
+
+  if (sport === ESports.VOLLEYBALL && collection === 'candidates') {
+    return {
+      redirect: {
+        destination: `/vote/volleyball/${gender}/edgeline`,
+      },
+      props: {},
+    }
+  }
+
   const playersFromFirestore = await db
     .collection(sport)
     .doc(gender)
