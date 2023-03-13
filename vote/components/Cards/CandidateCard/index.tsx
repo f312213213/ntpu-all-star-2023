@@ -3,11 +3,15 @@ import { ESports } from '@/vote/constants/sports'
 import { EToastType } from '@/vote/features/app/interface'
 import { IPlayer } from '@/vote/interfaces/player'
 import { closeBackdrop, openToast, showBackdrop } from '@/vote/features/app/slice'
-import { currentPlayerIsVotedSelector, isLoginSelector } from '@/vote/features/user/selector'
+import {
+  currentPlayerIsVotedSelector,
+  currentSectionIsUpToLimitSelector,
+  isLoginSelector
+} from '@/vote/features/user/selector'
 import { updateUserVoteRecord } from '@/vote/features/user/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
+import { useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import apiRequest, { EApiMethod } from '@/vote/apis/apiClient'
@@ -23,6 +27,9 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
   const [count, setCount] = useState(voteCount)
   const isLogin = useAppSelector(isLoginSelector)
   const currentPlayerIsVoted = useAppSelector(currentPlayerIsVotedSelector(id))
+  const currentSectionIsUpLimit = useAppSelector(currentSectionIsUpToLimitSelector(
+    `${sportType}-${gender}-${collection}-voteCount`
+  ))
   const dispatch = useAppDispatch()
   const handleShare = () => {
     if (isMobile) {
@@ -41,6 +48,12 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
       title: '已複製到剪貼簿！',
     }))
   }
+
+  const getButtonText = useMemo(() => {
+    if (currentSectionIsUpLimit) return '分區達上限'
+    if (currentPlayerIsVoted) return '已投過'
+    return '投票'
+  }, [currentPlayerIsVoted, currentSectionIsUpLimit])
 
   const handleVote = async () => {
     dispatch(showBackdrop())
@@ -95,11 +108,11 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
         </p>
         <div className={'card-actions justify-between items-baseline'}>
           <button
-            disabled={!isLogin || currentPlayerIsVoted}
+            disabled={!isLogin || currentPlayerIsVoted || currentSectionIsUpLimit}
             onClick={handleVote}
             className={'btn btn-primary'}
           >
-            {currentPlayerIsVoted ? '已投過' : '投票' }
+            {getButtonText}
           </button>
           <Link
             href={{
