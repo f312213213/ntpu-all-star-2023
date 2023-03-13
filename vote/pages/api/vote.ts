@@ -43,9 +43,12 @@ const VoteRequestHandler = async (
 
     if (userFirestoreObject?.votedPlayer?.[playerId]) throw Error('Duplicate vote action.')
 
+    const writeBatch = db.batch()
+
     // 該 player 的投票數加 1
-    await playerFirestoreRef.update({
+    writeBatch.update(playerFirestoreRef, {
       voteCount: FieldValue.increment(1),
+      votedPlayer: FieldValue.arrayUnion(userId),
     })
 
     /*
@@ -54,7 +57,7 @@ const VoteRequestHandler = async (
         2. 投給誰
         3. 在每個分區個投了幾票
      */
-    await userFirestoreRef.update({
+    writeBatch.update(userFirestoreRef, {
       voteCount: FieldValue.increment(1),
       [`${sport}-${gender}-${collection}-voteCount`]: FieldValue.increment(1),
       votedPlayer: {
@@ -62,6 +65,8 @@ const VoteRequestHandler = async (
         [playerId]: true,
       },
     })
+
+    await writeBatch.commit()
   } catch (e: any) {
     return res
       .status(400)

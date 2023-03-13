@@ -2,11 +2,9 @@ import { ESports, sportMap } from '@/vote/constants/sports'
 import { GetServerSideProps } from 'next'
 import { IPlayer } from '@/vote/interfaces/player'
 import { db } from '@/vote/lib/firebase'
-import { useRouter } from 'next/router'
 import CandidateCard from '@/vote/components/Cards/CandidateCard'
 import Layout from '@/vote/components/Layout'
 import PlayerSearchBar from '@/vote/components/PlayerSearchBar'
-import ScreenSinglePlayer from '@/vote/components/ScreenSinglePlayer'
 import SearchPlayer from '@/vote/components/SearchPlayer'
 
 interface IProps {
@@ -15,7 +13,6 @@ interface IProps {
 }
 
 const PlayerCategoryPage = ({ sportType, players }: IProps) => {
-  const router = useRouter()
   return (
     <Layout
       customMeta={{
@@ -55,6 +52,21 @@ export default PlayerCategoryPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sport } = context.query as { sport: string }
+
+  const userAgent = context.req.headers['user-agent']
+
+  const isMobile = Boolean(userAgent?.match(
+    /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+  ))
+
+  if (isMobile && sport === ESports.VOLLEYBALL) {
+    return {
+      redirect: {
+        destination: '/vote/volleyball/female/edgeline',
+      },
+      props: {},
+    }
+  }
 
   const femalePlayersCollectionList: string[] = []
   const malePlayersCollectionList: string[] = []

@@ -27,7 +27,7 @@ const ScreenSinglePlayer = () => {
       params: {
         sport: router.query.sport,
         gender: router.query.gender,
-        playerId: router.query.playerId,
+        playerId: router.query.modalPlayerId,
         collection: router.query.collection,
       },
     })
@@ -40,9 +40,9 @@ const ScreenSinglePlayer = () => {
     return () => {
       setPlayerData(null)
     }
-  }, [isMounted, router?.query?.playerId])
+  }, [isMounted, router?.query?.modalPlayerId])
 
-  if (!router?.query?.playerId) return null
+  if (!router?.query?.modalPlayerId) return null
 
   if (!playerData) return null
 

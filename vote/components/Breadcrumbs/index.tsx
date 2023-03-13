@@ -4,8 +4,10 @@ import { useRouter } from 'next/router'
 import BreadcrumbItem from '@/vote/components/Breadcrumbs/components/BreadcrumbItem'
 import Link from 'next/link'
 import React, { useMemo } from 'react'
+import useIsMobile from '@/vote/hooks/useIsMobile'
 
 const Breadcrumbs = () => {
+  const isMobile = useIsMobile()
   const router = useRouter()
   const sportType = router.query.sport
   const gender = router.query.gender as string
@@ -30,7 +32,7 @@ const Breadcrumbs = () => {
 
   if (!sportType || router.asPath.indexOf('vote') === -1) return null
   return (
-    <div className={'text-sm breadcrumbs'}>
+    <div className={'text-xl breadcrumbs my-4'}>
       <ul>
         <li>
           <Link href={'/vote'}>
@@ -48,8 +50,9 @@ const Breadcrumbs = () => {
             content={(
               <>
                 {Object.keys(sportMap).map((sport) => {
+                  const link = (isMobile && sport === 'volleyball') ? `/vote/${sport}/female/edgeline` : `/vote/${sport}`
                   return (
-                    <Link href={`/vote/${sport}`} key={sport}>
+                    <Link href={link} key={sport}>
                       {/* @ts-ignore */}
                       {sportMap[sport]}
                     </Link>

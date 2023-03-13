@@ -14,7 +14,7 @@ const Dialogs = () => {
   const isAlertDialogOpen = useAppSelector(isAlertDialogOpenSelector)
   const isInfoDialogOpen = useAppSelector(isInfoDialogOpenSelector)
   const isInputDialogOpen = useAppSelector(isInputDialogOpenSelector)
-  const isPlayerDialogOpen = router?.query?.playerId
+  const isPlayerDialogOpen = router?.query?.modalPlayerId
   return (
     <>
       {isAlertDialogOpen && <AlertDialog/>}
