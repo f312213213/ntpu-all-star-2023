@@ -1,9 +1,14 @@
-import { currentSectionVoteLeftSelector } from '@/vote/features/user/selector'
-import { genderMap } from '@/vote/constants/gender'
+import { EGender, genderMap } from '@/vote/constants/gender'
+import { currentSectionVoteLeftSelector, isLoginSelector } from '@/vote/features/user/selector'
 import { useAppSelector } from '@/vote/features/store'
+import { useRouter } from 'next/router'
 import BulletinItem from '@/vote/components/VoteLeftBulletin/BulletinItem'
+import useIsMobile from '@/vote/hooks/useIsMobile'
 
 const VoteLeftBulletin = () => {
+  const isLogin = useAppSelector(isLoginSelector)
+  const isMobile = useIsMobile()
+  const router = useRouter()
   const basketballFemaleLeft = useAppSelector(currentSectionVoteLeftSelector(
     'basketball-female-candidates-voteCount'
   ))
@@ -29,67 +34,144 @@ const VoteLeftBulletin = () => {
     'volleyball-male-libero-voteCount'
   ))
 
+  const { sport, gender, collection } = router.query
+
+  const dynamicLeft = useAppSelector(currentSectionVoteLeftSelector(
+    `${sport}-${gender}-${collection}-voteCount`
+  ))
+
+  if (!isLogin || !router.asPath.includes('vote')) return null
+
+  // if (isMobile) {
+  //   if (!router.pathname.includes('collection')) return null
+  //   return (
+  //     <div className={'flex justify-center items-center gap-4'}>
+  //       <p className={'text-xl'}>
+  //         此區剩下
+  //       </p>
+  //       <div className={'flex gap-4'}>
+  //         <BulletinItem value={dynamicLeft} />
+  //       </div>
+  //       <p className={'text-xl'}>
+  //         票
+  //       </p>
+  //     </div>
+  //   )
+  // }
+
   return (
-    <div className={'w-full flex justify-center'}>
-      <div className={'grid grid-flow-col gap-5 text-center auto-cols-max'}>
-        <div className={'flex flex-col items-center gap-4'}>
-          <p className={'text-2xl'}>
-            籃球
-          </p>
-          <div className={'flex gap-4'}>
-            <BulletinItem value={basketballMaleLeft} gender={genderMap.male} />
+    <div className={'max-w-full flex justify-center'}>
+      <div className={'max-w-full grid grid-flow-col gap-5 text-center auto-cols-max'}>
+        {
+          router.query.sport === 'basketball' && (
+            <div className={'flex flex-col items-center gap-4'}>
+              <p className={'text-2xl'}>
+                籃球
+              </p>
+              <div className={'flex gap-4'}>
+                {
+                  (router.query.gender === EGender.MALE || !router.query.gender) && <BulletinItem value={basketballMaleLeft} gender={genderMap.male} />
+                }
 
-            <BulletinItem value={basketballFemaleLeft} gender={genderMap.female} />
-          </div>
-        </div>
+                {
+                  (router.query.gender === EGender.FEMALE || !router.query.gender) && <BulletinItem value={basketballFemaleLeft} gender={genderMap.female} />
+                }
+              </div>
+            </div>
+          )
+        }
 
-        <div className={'divider divider-horizontal'} />
+        {
+          router.query.sport === 'volleyball' && (
+            <>
+              {
+                (router.query.collection === 'edgeline' || !router.query.collection) && (
+                  <div className={'flex flex-col items-center gap-4'}>
+                    <p className={'text-2xl'}>
+                      排球 - 邊線攻擊手
+                    </p>
+                    <div className={'flex gap-4'}>
+                      {
+                        (router.query.gender === EGender.MALE || !router.query.gender) && <BulletinItem value={volleyballMaleEdgeLineLeft} gender={genderMap.male} />
+                      }
 
-        <div className={'flex flex-col items-center gap-4'}>
-          <p className={'text-2xl'}>
-            排球 - 邊線攻擊手
-          </p>
-          <div className={'flex gap-4'}>
-            <BulletinItem value={volleyballMaleEdgeLineLeft} gender={genderMap.male} />
+                      {
+                        (router.query.gender === EGender.FEMALE || !router.query.gender) && <BulletinItem value={volleyballFemaleEdgeLineLeft} gender={genderMap.female} />
+                      }
+                    </div>
+                  </div>
+                )
+              }
 
-            <BulletinItem value={volleyballFemaleEdgeLineLeft} gender={genderMap.female} />
-          </div>
-        </div>
+              {!isMobile && (router.query.collection === 'edgeline' || !router.query.collection) && (router.query.collection === 'setter' || !router.query.collection) && <div className={'divider divider-horizontal'} />}
 
-        <div className={'divider divider-horizontal'} />
+              {
+                (router.query.collection === 'setter' || !router.query.collection) && (
+                  <>
 
-        <div className={'flex flex-col items-center gap-4'}>
-          <p className={'text-2xl'}>
-            排球 - 舉球員
-          </p>
-          <div className={'flex gap-4'}>
-            <BulletinItem value={volleyballMaleSetterLeft} gender={genderMap.male} />
+                    <div className={'flex flex-col items-center gap-4'}>
+                      <p className={'text-2xl'}>
+                        排球 - 舉球員
+                      </p>
+                      <div className={'flex gap-4'}>
+                        {
+                          (router.query.gender === EGender.MALE || !router.query.gender) && <BulletinItem value={volleyballMaleSetterLeft} gender={genderMap.male} />
+                        }
 
-            <BulletinItem value={volleyballFemaleSetterLeft} gender={genderMap.female} />
-          </div>
-        </div>
+                        {
+                          (router.query.gender === EGender.FEMALE || !router.query.gender) && <BulletinItem value={volleyballFemaleSetterLeft} gender={genderMap.female} />
+                        }
+                      </div>
+                    </div>
+                  </>
+                )
+              }
 
-        <div className={'divider divider-horizontal'} />
+              {
+                router.query.gender === EGender.FEMALE
+                  ? <></>
+                  : (
+                    <>
+                      {
+                        (router.query.collection === 'spiker' || !router.query.collection) && (
+                          <>
+                            {!isMobile && (router.query.collection === 'setter' || !router.query.collection) && <div className={'divider divider-horizontal'} />}
 
-        <div className={'flex flex-col items-center gap-4'}>
-          <p className={'text-2xl'}>
-            排球 - 中間手
-          </p>
-          <div className={'flex gap-4'}>
-            <BulletinItem value={volleyballMaleSpikerLeft} gender={genderMap.male} />
-          </div>
-        </div>
+                            <div className={'flex flex-col items-center gap-4'}>
+                              <p className={'text-2xl'}>
+                                排球 - 中間手
+                              </p>
+                              <div className={'flex gap-4'}>
+                                <BulletinItem value={volleyballMaleSpikerLeft} gender={genderMap.male} />
+                              </div>
+                            </div>
+                          </>
+                        )
+                      }
 
-        <div className={'divider divider-horizontal'} />
+                      {!isMobile && (router.query.collection === 'setter' || !router.query.collection) && (router.query.collection === 'libero' || !router.query.collection) && <div className={'divider divider-horizontal'} />}
 
-        <div className={'flex flex-col items-center gap-4'}>
-          <p className={'text-2xl'}>
-            排球 - 自由球員
-          </p>
-          <div className={'flex gap-4'}>
-            <BulletinItem value={volleyballMaleLiberoLeft} gender={genderMap.male} />
-          </div>
-        </div>
+                      {
+                        (router.query.collection === 'libero' || !router.query.collection) && (
+                          <>
+
+                            <div className={'flex flex-col items-center gap-4'}>
+                              <p className={'text-2xl'}>
+                                排球 - 自由球員
+                              </p>
+                              <div className={'flex gap-4'}>
+                                <BulletinItem value={volleyballMaleLiberoLeft} gender={genderMap.male} />
+                              </div>
+                            </div>
+                          </>
+                        )
+                      }
+                    </>
+                    )
+              }
+            </>
+          )
+        }
 
       </div>
     </div>

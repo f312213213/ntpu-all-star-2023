@@ -65,10 +65,7 @@ const Layout = ({ children, customMeta }: IPageProps) => {
       </Head>
       <main className={'min-h-screen w-full bg-gray-700 mt-16 py-10 px-4 md:px-10'}>
 
-        {
-          router.asPath.includes('vote') &&
-            <VoteLeftBulletin />
-        }
+        <VoteLeftBulletin />
 
         <Breadcrumbs />
 

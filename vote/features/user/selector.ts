@@ -14,4 +14,4 @@ export const currentPlayerIsVotedSelector = (playerId: string) => (state: RootSt
 export const currentSectionIsUpToLimitSelector = (section: string) => (state: RootState) => state.user?.user[section] >= sectionVoteLimit[section] ?? true
 
 // @ts-ignore
-export const currentSectionVoteLeftSelector = (section: string) => (state: RootState) => sectionVoteLimit[section] - state.user?.user[section] ?? 0
+export const currentSectionVoteLeftSelector = (section: string) => (state: RootState) => sectionVoteLimit[section] - (state.user?.user[section] ?? 0)

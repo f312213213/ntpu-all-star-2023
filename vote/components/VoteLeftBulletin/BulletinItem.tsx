@@ -5,7 +5,7 @@ const BulletinItem = ({
   gender,
 }: {
   value: number
-  gender: genderMap
+  gender?: genderMap
 }) => {
   return (
     <div className={'flex flex-col p-2 bg-neutral rounded-box text-neutral-content'}>
