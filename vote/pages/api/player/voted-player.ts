@@ -67,34 +67,74 @@ const votedPlayerRequestHandler = async (
 
     basketballVoted.forEach(p => {
       if (playerIsFemale(p)) {
-        basketballFemale.push(p.data() as IPlayer)
+        basketballFemale.push({
+          ...p.data(),
+          id: p.id,
+          collection: 'candidates',
+          gender: 'female',
+        } as IPlayer)
       } else {
-        basketballMale.push(p.data() as IPlayer)
+        basketballMale.push({
+          ...p.data(),
+          id: p.id,
+          collection: 'candidates',
+          gender: 'male',
+        } as IPlayer)
       }
     })
 
     volleyballSetterVoted.forEach(p => {
       if (playerIsFemale(p)) {
-        volleyballSetterFemale.push(p.data() as IPlayer)
+        volleyballSetterFemale.push({
+          ...p.data(),
+          id: p.id,
+          collection: 'setter',
+          gender: 'female',
+        } as IPlayer)
       } else {
-        volleyballSetterMale.push(p.data() as IPlayer)
+        volleyballSetterMale.push({
+          ...p.data(),
+          id: p.id,
+          collection: 'setter',
+          gender: 'male',
+        } as IPlayer)
       }
     })
 
     volleyballEdgelineVoted.forEach(p => {
       if (playerIsFemale(p)) {
-        volleyballEdgeLineFemale.push(p.data() as IPlayer)
+        volleyballEdgeLineFemale.push({
+          ...p.data(),
+          id: p.id,
+          collection: 'edgeline',
+          gender: 'female',
+        } as IPlayer)
       } else {
-        volleyballEdgeLineMale.push(p.data() as IPlayer)
+        volleyballEdgeLineMale.push({
+          ...p.data(),
+          id: p.id,
+          collection: 'edgeline',
+          gender: 'male',
+        } as IPlayer)
       }
     })
 
     volleyballSpikerVoted.forEach(p => {
-      volleyballSpikerMale.push(p.data() as IPlayer)
+      volleyballSpikerMale.push({
+        ...p.data(),
+        id: p.id,
+        collection: 'spiker',
+        gender: 'male',
+      } as IPlayer)
     })
 
     volleyballLiberoVoted.forEach(p => {
-      volleyballLiberoMale.push(p.data() as IPlayer)
+      volleyballLiberoMale.push({
+        ...p.data(),
+        id: p.id,
+        collection: 'libero',
+        gender: 'male',
+      } as IPlayer)
     })
 
     return res

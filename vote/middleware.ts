@@ -4,6 +4,7 @@ import type { NextRequest } from 'next/server'
 export const config = {
   matcher: [
     '/api/vote',
+    '/api/cancel-vote',
     '/api/me',
     '/api/player/voted-player',
   ],

@@ -3,6 +3,7 @@ import {
   IState
 } from './interface'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import omit from 'lodash/omit'
 
 const initialState: IState = {
   status: EUserStatus.INITIAL,
@@ -38,6 +39,18 @@ const appSlice = createSlice({
       // @ts-ignore
       state.user[`${sport}-${gender}-${collection}-voteCount`] = (state.user[`${sport}-${gender}-${collection}-voteCount`] || 0) + 1
     },
+    updateUserCancelVoteRecord: (state, action) => {
+      const {
+        id,
+        sport,
+        gender,
+        collection,
+      } = action.payload
+      state.user.votedPlayer = omit(state.user.votedPlayer, id)
+
+      // @ts-ignore
+      state.user[`${sport}-${gender}-${collection}-voteCount`] = (state.user[`${sport}-${gender}-${collection}-voteCount`] || 0) - 1
+    },
   },
 })
 
@@ -45,6 +58,7 @@ export const {
   userLogin,
   userLogout,
   updateUserVoteRecord,
+  updateUserCancelVoteRecord,
 } = appSlice.actions
 
 export default appSlice
