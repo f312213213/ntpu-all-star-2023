@@ -3,6 +3,7 @@ import { db } from '@/vote/lib/firebase'
 import Layout from '@/vote/components/Layout'
 import Link from 'next/link'
 import React from 'react'
+import time from '@/vote/constants/time'
 
 interface IProps {
   sportTypes: string[]
@@ -39,7 +40,7 @@ export default VoteRootPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const collectionsFromFirestore = await db.listCollections()
-  context.res.setHeader('Cache-Control', 'max-age=10, public')
+  context.res.setHeader('Cache-Control', `max-age=${time.DAY * 30}, public`)
   const sportTypes: string[] = []
   collectionsFromFirestore.forEach(collection => {
     if (collection.id !== 'users') {
