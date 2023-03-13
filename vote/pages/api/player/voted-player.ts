@@ -1,4 +1,4 @@
-import { db, getUserIdFromAuthorizationHeader } from '@/vote/lib/firebase'
+import { db } from '@/vote/lib/firebase'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 interface Data {
@@ -18,7 +18,7 @@ const votedPlayerRequestHandler = async (
   res: NextApiResponse<Data>
 ) => {
   try {
-    const userId = await getUserIdFromAuthorizationHeader(req.headers.authorization)
+    const userId = req.headers.userid as string
     // get user data by userId get from jwt
     const userRef = await db.collection('users').doc(userId).get()
     const userObject = userRef.data()

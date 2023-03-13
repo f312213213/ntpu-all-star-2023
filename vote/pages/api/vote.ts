@@ -1,5 +1,5 @@
 import { IPlayer } from '@/vote/interfaces/player'
-import { db, getUserIdFromAuthorizationHeader } from '@/vote/lib/firebase'
+import { db } from '@/vote/lib/firebase'
 import { firestore } from 'firebase-admin'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import FieldValue = firestore.FieldValue;
@@ -25,7 +25,7 @@ const VoteRequestHandler = async (
   res: NextApiResponse<Data>
 ) => {
   try {
-    const userId = await getUserIdFromAuthorizationHeader(req.headers.authorization)
+    const userId = req.headers.userid as string
 
     const { sport, gender, id: playerId, collection = 'candidates' } = req.body
 
