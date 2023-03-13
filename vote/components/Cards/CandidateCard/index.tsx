@@ -29,7 +29,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
       if (navigator.share) {
         navigator.share({
           title: `${username} 的投票頁面 - 北大明星賽 2023`,
-          text: 'introduction',
+          text: introduction,
           url: `${process.env.NEXT_PUBLIC_HOST_DOMAIN}/vote/${sportType}/${gender}/${collection}/${id}`,
         })
         return
