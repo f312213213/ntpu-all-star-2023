@@ -11,6 +11,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import apiRequest, { EApiMethod } from '@/vote/apis/apiClient'
+import useIsMobile from '@/vote/hooks/useIsMobile'
 
 interface IProps extends IPlayer {
   sportType: ESports
@@ -18,11 +19,22 @@ interface IProps extends IPlayer {
 
 const CandidateCard = ({ id, introduction, photoURL, username, gender, collection, voteCount, sportType }: IProps) => {
   const router = useRouter()
+  const isMobile = useIsMobile()
   const [count, setCount] = useState(voteCount)
   const isLogin = useAppSelector(isLoginSelector)
   const currentPlayerIsVoted = useAppSelector(currentPlayerIsVotedSelector(id))
   const dispatch = useAppDispatch()
-  const copyPlayerLink = () => {
+  const handleShare = () => {
+    if (isMobile) {
+      if (navigator.share) {
+        navigator.share({
+          title: `${username} 的投票頁面 - 北大明星賽 2023`,
+          text: introduction,
+          url: `${process.env.NEXT_PUBLIC_HOST_DOMAIN}/vote/${sportType}/${gender}/${collection}/${id}`,
+        })
+        return
+      }
+    }
     navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_HOST_DOMAIN}/vote/${sportType}/${gender}/${collection}/${id}`)
     dispatch(openToast({
       type: EToastType.SUCCESS,
@@ -65,7 +77,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
           alt={username}
         />
         <button
-        onClick={copyPlayerLink}
+        onClick={handleShare}
           className={'text-white absolute right-0 top-0 p-4 text-2xl scale-0 group-hover:scale-100 transition'}
         >
           <AiOutlineShareAlt />
