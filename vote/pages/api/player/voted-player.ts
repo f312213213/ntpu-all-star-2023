@@ -1,9 +1,11 @@
+import { IPlayer } from '@/vote/interfaces/player'
 import { db } from '@/vote/lib/firebase'
+import { playerIsFemale } from '@/vote/utilis/player'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 interface Data {
   status: string
-  voted?: any[]
+  voted?: any
 }
 
 interface IRequestBody extends NextApiRequest {
@@ -50,15 +52,66 @@ const votedPlayerRequestHandler = async (
       .where('votedPlayer', 'array-contains', userId)
       .get()
 
-    console.log({
-      basketballVoted: basketballVoted.size,
-      volleyballSpikerVoted: volleyballSpikerVoted.size,
-      volleyballEdgelineVoted: volleyballEdgelineVoted.size,
-      volleyballSetterVoted: volleyballSetterVoted.size,
-      volleyballLiberoVoted: volleyballLiberoVoted.size,
+    const basketballFemale: IPlayer[] = []
+    const basketballMale: IPlayer[] = []
+
+    const volleyballSetterFemale: IPlayer[] = []
+    const volleyballSetterMale: IPlayer[] = []
+
+    const volleyballEdgeLineFemale: IPlayer[] = []
+    const volleyballEdgeLineMale: IPlayer[] = []
+
+    const volleyballSpikerMale: IPlayer[] = []
+
+    const volleyballLiberoMale: IPlayer[] = []
+
+    basketballVoted.forEach(p => {
+      if (playerIsFemale(p)) {
+        basketballFemale.push(p.data() as IPlayer)
+      } else {
+        basketballMale.push(p.data() as IPlayer)
+      }
     })
 
-    return res.status(200).json({ status: '0', voted: votedPlayerIdList })
+    volleyballSetterVoted.forEach(p => {
+      if (playerIsFemale(p)) {
+        volleyballSetterFemale.push(p.data() as IPlayer)
+      } else {
+        volleyballSetterMale.push(p.data() as IPlayer)
+      }
+    })
+
+    volleyballEdgelineVoted.forEach(p => {
+      if (playerIsFemale(p)) {
+        volleyballEdgeLineFemale.push(p.data() as IPlayer)
+      } else {
+        volleyballEdgeLineMale.push(p.data() as IPlayer)
+      }
+    })
+
+    volleyballSpikerVoted.forEach(p => {
+      volleyballSpikerMale.push(p.data() as IPlayer)
+    })
+
+    volleyballLiberoVoted.forEach(p => {
+      volleyballLiberoMale.push(p.data() as IPlayer)
+    })
+
+    return res
+      .status(200)
+      .json({
+        status: '0',
+        voted: {
+          basketballFemale,
+          basketballMale,
+          volleyballSetterFemale,
+          volleyballSetterMale,
+          volleyballEdgeLineFemale,
+          volleyballEdgeLineMale,
+          volleyballSpikerMale,
+          volleyballLiberoMale,
+        },
+      })
   } catch (e) {
     return res.status(400).json({ status: '-1' })
   }
