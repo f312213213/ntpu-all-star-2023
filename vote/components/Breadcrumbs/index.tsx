@@ -1,13 +1,11 @@
 import { ECollection, ESports, collectionMap, sportMap } from '@/vote/constants/sports'
 import { EGender, genderMap } from '@/vote/constants/gender'
 import { useRouter } from 'next/router'
+import BreadcrumbItem from '@/vote/components/Breadcrumbs/components/BreadcrumbItem'
 import Link from 'next/link'
 import React, { useMemo } from 'react'
-import Tooltip from '@/vote/components/Tooltip'
-import useIsMobile from '@/vote/hooks/useIsMobile'
 
 const Breadcrumbs = () => {
-  const isMobile = useIsMobile()
   const router = useRouter()
   const sportType = router.query.sport
   const gender = router.query.gender as string
@@ -41,8 +39,7 @@ const Breadcrumbs = () => {
         </li>
 
         <li>
-          <Tooltip
-            side={'bottom'}
+          <BreadcrumbItem
             trigger={(
               <Link href={`/vote/${sportType}`}>
                 {getSportTypeText}
@@ -64,8 +61,7 @@ const Breadcrumbs = () => {
         </li>
 
         <li>
-          <Tooltip
-            side={'bottom'}
+          <BreadcrumbItem
             trigger={(
               <Link href={`/vote/${sportType}/${gender || 'female'}`} className={gender ? undefined : 'text-gray-500'}>
                 {getGenderText}
@@ -88,8 +84,7 @@ const Breadcrumbs = () => {
         {
           gender && sportType === ESports.VOLLEYBALL && (
             <li>
-              <Tooltip
-                side={'bottom'}
+              <BreadcrumbItem
                 trigger={(
                   <Link href={`/vote/${sportType}/${gender || 'female'}/${collection || 'edgeline'}`} className={collection ? undefined : 'text-gray-500'}>
                     {getCollectionText || '邊線攻擊手'}
