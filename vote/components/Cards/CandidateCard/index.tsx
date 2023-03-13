@@ -107,7 +107,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
               query: {
                 sport: router.query.sport,
                 gender,
-                playerId: id,
+                modalPlayerId: id,
                 collection,
               },
             }}

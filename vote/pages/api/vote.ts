@@ -46,6 +46,7 @@ const VoteRequestHandler = async (
     // 該 player 的投票數加 1
     await playerFirestoreRef.update({
       voteCount: FieldValue.increment(1),
+      votedPlayer: FieldValue.arrayUnion(userId),
     })
 
     /*
