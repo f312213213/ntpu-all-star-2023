@@ -34,13 +34,7 @@ const VoteLeftBulletin = () => {
     'volleyball-male-libero-voteCount'
   ))
 
-  const { sport, gender, collection } = router.query
-
-  const dynamicLeft = useAppSelector(currentSectionVoteLeftSelector(
-    `${sport}-${gender}-${collection}-voteCount`
-  ))
-
-  if (!isLogin || !router.asPath.includes('vote')) return null
+  if (!isLogin || router.route === '/me' || !router.asPath.includes('vote')) return null
 
   // if (isMobile) {
   //   if (!router.pathname.includes('collection')) return null
