@@ -91,7 +91,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
         />
         <button
         onClick={handleShare}
-          className={'text-white absolute right-0 top-0 p-4 text-2xl scale-0 group-hover:scale-100 transition'}
+          className={`text-white absolute right-0 top-0 p-4 text-2xl ${!isMobile && 'scale-0'} group-hover:scale-100 transition`}
         >
           <AiOutlineShareAlt />
         </button>
