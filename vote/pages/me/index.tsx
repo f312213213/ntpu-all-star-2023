@@ -1,10 +1,11 @@
 import { GetServerSideProps } from 'next'
 
 import { IPlayer } from '@/vote/interfaces/player'
+import { closeBackdrop, showBackdrop } from '@/vote/features/app/slice'
 import { collectionMap, sportMap } from '@/vote/constants/sports'
 import { genderMap } from '@/vote/constants/gender'
 import { isLoginSelector } from '@/vote/features/user/selector'
-import { useAppSelector } from '@/vote/features/store'
+import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { useEffect, useState } from 'react'
 import Layout from '@/vote/components/Layout'
 import Link from 'next/link'
@@ -14,15 +15,18 @@ import snakeCase from 'lodash/snakeCase'
 
 const UserPage = () => {
   const isLogin = useAppSelector(isLoginSelector)
+  const dispatch = useAppDispatch()
   const [votedPlayer, setVotedPlayer] = useState<{
     [key: string]: IPlayer[]
   }>({})
   const getVotedPlayer = async () => {
+    dispatch(showBackdrop())
     const { data } = await apiRequest({
       endpoint: '/api/player/voted-player',
     })
 
     setVotedPlayer(data.voted)
+    dispatch(closeBackdrop())
   }
 
   useEffect(() => {
