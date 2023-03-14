@@ -2,6 +2,8 @@ import { useRouter } from 'next/router'
 import Breadcrumbs from '@/vote/components/Breadcrumbs'
 import Head from 'next/head'
 import React from 'react'
+import VoteLeftBulletin from '@/vote/components/VoteLeftBulletin'
+import useIsMobile from '@/vote/hooks/useIsMobile'
 
 interface ICustomMeta {
   title: string
@@ -20,6 +22,7 @@ interface IPageProps {
 
 const Layout = ({ children, customMeta }: IPageProps) => {
   const router = useRouter()
+  const isMobile = useIsMobile()
   const meta = {
     title: '首頁 - 北大明星賽 2023',
     description: '',
@@ -62,7 +65,9 @@ const Layout = ({ children, customMeta }: IPageProps) => {
           meta.keyword && <meta name={'keywords'} content={meta.keyword} />
         }
       </Head>
-      <main className={'min-h-screen w-full bg-gray-700 mt-16 py-10 px-4 md:px-10'}>
+      <main className={`min-h-screen w-full bg-gray-700 mt-16 py-10  px-4 md:px-10 ${isMobile && 'my-16'}`}>
+
+        <VoteLeftBulletin />
 
         <Breadcrumbs />
 

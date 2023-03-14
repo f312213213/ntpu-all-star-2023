@@ -119,7 +119,7 @@ const DropdownSiteMenu = () => {
                           className={'mr-2 h-5 w-5 text-violet-400'}
                           aria-hidden={'true'}
                         />
-                        個人頁面
+                        投票紀錄
                       </Link>
                     )}
                   </Menu.Item>

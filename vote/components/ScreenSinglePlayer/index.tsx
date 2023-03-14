@@ -27,7 +27,7 @@ const ScreenSinglePlayer = () => {
       params: {
         sport: router.query.sport,
         gender: router.query.gender,
-        playerId: router.query.playerId,
+        playerId: router.query.modalPlayerId,
         collection: router.query.collection,
       },
     })
@@ -40,13 +40,13 @@ const ScreenSinglePlayer = () => {
     return () => {
       setPlayerData(null)
     }
-  }, [isMounted, router?.query?.playerId])
+  }, [isMounted, router?.query?.modalPlayerId])
 
-  if (!router?.query?.playerId) return null
+  if (!router?.query?.modalPlayerId) return null
 
   if (!playerData) return null
 
-  const { introduction, photoURL, username } = playerData
+  const { introduction, photoURL, username, voteCount } = playerData
 
   return (
     <>
@@ -55,9 +55,9 @@ const ScreenSinglePlayer = () => {
         <meta content={introduction} name={'description'} />
       </Head>
       <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 flex justify-center items-center top-0 left-0'} ref={outRef} onClick={handleClose} >
-        <div className={'flex flex-col justify-center items-center space-y-3 bg-white w-8/12 rounded-xl md:rounded-none md:w-2/5 md:h-screen p-4'}>
-          <div className={'card w-full '}>
-            <figure className={'relative h-52'}>
+        <div className={'p-4 md:p-8 space-y-3 bg-white w-8/12  md:w-[700px] h-screen overflow-y-auto'}>
+          <div className={'card w-full'}>
+            <figure className={'relative h-[200px]'}>
               <Image
                 className={'object-contain'}
                 fill
@@ -67,9 +67,14 @@ const ScreenSinglePlayer = () => {
             </figure>
             <div className={'card-body'}>
               <h2 className={'card-title text-black'}>
-                {username}
+                <p>
+                  {username}
+                </p>
               </h2>
               <p className={'text-gray-700'}>
+                {voteCount} 票
+              </p>
+              <p className={'text-gray-700 whitespace-pre-wrap'}>
                 {introduction}
               </p>
             </div>

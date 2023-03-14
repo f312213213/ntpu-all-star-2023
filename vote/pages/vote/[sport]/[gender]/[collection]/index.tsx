@@ -1,4 +1,4 @@
-import { EGender } from '@/vote/constants/gender'
+import { EGender, genderMap } from '@/vote/constants/gender'
 import { ESports, sportMap } from '@/vote/constants/sports'
 import { GetServerSideProps } from 'next'
 import { IPlayer } from '@/vote/interfaces/player'
@@ -22,13 +22,12 @@ const PlayerCategoryPage = ({ sportType, players }: IProps) => {
   return (
     <Layout
       customMeta={{
-        title: `${sportType}-${gender === 'male' ? EGender.MALE : EGender.FEMALE} 的投票頁面 - 北大明星賽 2023`,
-        description: `所有參加${sportType}投票的${gender === 'male' ? EGender.MALE : EGender.FEMALE}同學都在這！`,
+        // @ts-ignore
+        title: `${sportType}-${genderMap[gender]} 的投票頁面 - 北大明星賽 2023`,
+        // @ts-ignore
+        description: `所有參加${sportType}投票的${genderMap[gender]}同學都在這！`,
       }}
     >
-      {
-        router?.query?.playerId && <ScreenSinglePlayer />
-      }
 
       <div className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10'}>
         {

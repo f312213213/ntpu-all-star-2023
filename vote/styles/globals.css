@@ -21,3 +21,7 @@
 .success-toast {
     @apply alert-success
 }
+
+body {
+    @apply text-gray-50 text-opacity-80
+}

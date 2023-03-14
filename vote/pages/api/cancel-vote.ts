@@ -4,6 +4,7 @@ import { firestore } from 'firebase-admin'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import FieldValue = firestore.FieldValue;
 import { ESports } from '@/vote/constants/sports'
+import omit from 'lodash/omit'
 
 interface Data {
   status: string
@@ -41,14 +42,14 @@ const VoteRequestHandler = async (
 
     const userFirestoreObject = (await userFirestoreRef.get()).data()
 
-    if (userFirestoreObject?.votedPlayer?.[playerId]) throw Error('Duplicate vote action.')
+    if (!userFirestoreObject?.votedPlayer?.[playerId]) throw Error('Not vote yet.')
 
     const writeBatch = db.batch()
 
     // 該 player 的投票數加 1
     writeBatch.update(playerFirestoreRef, {
-      voteCount: FieldValue.increment(1),
-      votedPlayer: FieldValue.arrayUnion(userId),
+      voteCount: FieldValue.increment(-1),
+      votedPlayer: FieldValue.arrayRemove(userId),
     })
 
     /*
@@ -58,12 +59,10 @@ const VoteRequestHandler = async (
         3. 在每個分區個投了幾票
      */
     writeBatch.update(userFirestoreRef, {
-      voteCount: FieldValue.increment(1),
-      [`${sport}-${gender}-${collection}-voteCount`]: FieldValue.increment(1),
-      votedPlayer: {
-        ...userFirestoreObject?.votedPlayer,
-        [playerId]: true,
-      },
+      voteCount: FieldValue.increment(-1),
+      [`${sport}-${gender}-${collection}-voteCount`]: FieldValue.increment(-1),
+      votedPlayer: omit(userFirestoreObject?.votedPlayer, playerId),
+
     })
 
     await writeBatch.commit()
