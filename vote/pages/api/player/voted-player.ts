@@ -1,6 +1,7 @@
 import { IPlayer } from '@/vote/interfaces/player'
 import { db } from '@/vote/lib/firebase'
 import { playerIsFemale } from '@/vote/utilis/player'
+import omitBy from 'lodash/omitBy'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 interface Data {
@@ -141,7 +142,7 @@ const votedPlayerRequestHandler = async (
       .status(200)
       .json({
         status: '0',
-        voted: {
+        voted: omitBy({
           basketballFemale,
           basketballMale,
           volleyballSetterFemale,
@@ -150,7 +151,7 @@ const votedPlayerRequestHandler = async (
           volleyballEdgelineMale,
           volleyballSpikerMale,
           volleyballLiberoMale,
-        },
+        }, (section) => section.length === 0),
       })
   } catch (e) {
     return res.status(400).json({ status: '-1' })

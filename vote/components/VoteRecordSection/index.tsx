@@ -23,6 +23,8 @@ const VoteRecordSection = ({
     setVotedPlayerList(votedPlayer)
   }, [votedPlayer])
 
+  if (votedPlayerList.length === 0) return null
+
   return (
     <div className={'my-4'}>
       <h3 className={'text-xl'}>
@@ -30,31 +32,27 @@ const VoteRecordSection = ({
       </h3>
       {
         votedPlayerList.length === 0
-          ? (
-            <p className={'my-4 text-center'}>暫無資料</p>
-            )
-          : (
-            <div className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10 my-8'}>
-              {
-                votedPlayerList.map((player) => {
-                  return (
-                    <CandidateCard
-                      onCancelVote={onCancelVote}
-                      key={player.id}
-                      id={player.id}
-                      photoURL={player.photoURL}
-                      username={player.username}
-                      introduction={player.introduction}
-                      gender={player.gender}
-                      collection={player.collection}
-                      voteCount={player.voteCount}
-                      sportType={player.collection === 'candidates' ? ESports.BASKETBALL : ESports.VOLLEYBALL}
-                    />
-                  )
-                })
-              }
-            </div>
-            )
+          ? <p>暫無資料</p>
+          : <div className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10 my-8'}>
+            {
+              votedPlayerList.map((player) => {
+                return (
+                  <CandidateCard
+                    onCancelVote={onCancelVote}
+                    key={player.id}
+                    id={player.id}
+                    photoURL={player.photoURL}
+                    username={player.username}
+                    introduction={player.introduction}
+                    gender={player.gender}
+                    collection={player.collection}
+                    voteCount={player.voteCount}
+                    sportType={player.collection === 'candidates' ? ESports.BASKETBALL : ESports.VOLLEYBALL}
+                  />
+                )
+              })
+            }
+          </div>
       }
     </div>
   )
