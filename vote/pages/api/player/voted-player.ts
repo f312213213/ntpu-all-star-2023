@@ -58,8 +58,8 @@ const votedPlayerRequestHandler = async (
     const volleyballSetterFemale: IPlayer[] = []
     const volleyballSetterMale: IPlayer[] = []
 
-    const volleyballEdgeLineFemale: IPlayer[] = []
-    const volleyballEdgeLineMale: IPlayer[] = []
+    const volleyballEdgelineFemale: IPlayer[] = []
+    const volleyballEdgelineMale: IPlayer[] = []
 
     const volleyballSpikerMale: IPlayer[] = []
 
@@ -103,14 +103,14 @@ const votedPlayerRequestHandler = async (
 
     volleyballEdgelineVoted.forEach(p => {
       if (playerIsFemale(p)) {
-        volleyballEdgeLineFemale.push({
+        volleyballEdgelineFemale.push({
           ...p.data(),
           id: p.id,
           collection: 'edgeline',
           gender: 'female',
         } as IPlayer)
       } else {
-        volleyballEdgeLineMale.push({
+        volleyballEdgelineMale.push({
           ...p.data(),
           id: p.id,
           collection: 'edgeline',
@@ -146,8 +146,8 @@ const votedPlayerRequestHandler = async (
           basketballMale,
           volleyballSetterFemale,
           volleyballSetterMale,
-          volleyballEdgeLineFemale,
-          volleyballEdgeLineMale,
+          volleyballEdgelineFemale,
+          volleyballEdgelineMale,
           volleyballSpikerMale,
           volleyballLiberoMale,
         },
