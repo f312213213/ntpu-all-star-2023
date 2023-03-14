@@ -12,6 +12,7 @@ import { updateUserCancelVoteRecord, updateUserVoteRecord } from '@/vote/feature
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
+import BlurImage from '@/vote/components/BlurImage'
 import Image from 'next/image'
 import Link from 'next/link'
 import apiRequest, { EApiMethod } from '@/vote/apis/apiClient'
@@ -109,9 +110,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
   return (
     <div className={'card w-full bg-base-100 shadow-xl group'}>
       <figure className={'relative h-52 bg-base-300'}>
-        <Image
-          className={'object-contain'}
-          fill
+        <BlurImage
           src={photoURL}
           alt={username}
         />

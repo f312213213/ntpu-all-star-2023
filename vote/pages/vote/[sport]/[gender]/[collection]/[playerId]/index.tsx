@@ -5,6 +5,7 @@ import { db } from '@/vote/lib/firebase'
 import { updateUserVoteRecord } from '@/vote/features/user/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { useRouter } from 'next/router'
+import BlurImage from '@/vote/components/BlurImage'
 import Image from 'next/image'
 import Layout from '@/vote/components/Layout'
 import React, { useState } from 'react'
@@ -63,26 +64,36 @@ const PlayerSinglePage = ({
       }}
     >
 
-      <div className={'relative h-96'}>
-        <Image
-          className={'object-contain'}
-          fill
-          src={photoURL}
-          alt={username}
-        />
+      <div className={'w-full overflow-x-hidden relative'}>
+        <figure className={'relative w-full h-[400px]'}>
+          <BlurImage
+            src={photoURL}
+            alt={username}
+          />
+        </figure>
+        <div className={'card-body '}>
+          <h2 className={'card-title'}>
+            <p>
+              {username}
+            </p>
+          </h2>
+          <p>
+            {voteCount} 票
+          </p>
+          <p className={'whitespace-pre-wrap'}>
+            {introduction}
+          </p>
+        </div>
+        <div className={'card-action'}>
+          <button
+            disabled={!isLogin || currentPlayerIsVoted}
+            onClick={handleVote}
+            className={'btn btn-primary'}
+          >
+            {currentPlayerIsVoted ? '已投過' : '投票' }
+          </button>
+        </div>
       </div>
-      <p>
-
-        {username}
-      </p>
-      <p>{count} 票</p>
-      <button
-        disabled={!isLogin || currentPlayerIsVoted}
-        onClick={handleVote}
-        className={'btn btn-primary'}
-      >
-        {currentPlayerIsVoted ? '已投過' : '投票' }
-      </button>
     </Layout>
   )
 }
