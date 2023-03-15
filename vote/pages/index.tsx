@@ -13,9 +13,9 @@ const HomePage = () => {
       <div className={'flex justify-center'}>
         <Link
           href={'/vote'}
-          className={'btn btn-accent'}
+          className={'btn btn-lg btn-accent'}
         >
-          投票！
+          前往投票
         </Link>
       </div>
     </Layout>

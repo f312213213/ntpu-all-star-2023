@@ -84,7 +84,7 @@ const PlayerSinglePage = ({
             {introduction}
           </p>
         </div>
-        <div className={'card-action'}>
+        <div className={'card-action flex justify-center'}>
           <button
             disabled={!isLogin || currentPlayerIsVoted}
             onClick={handleVote}
