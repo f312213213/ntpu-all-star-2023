@@ -23,6 +23,7 @@ const UserPage = () => {
     dispatch(showBackdrop())
     const { data } = await apiRequest({
       endpoint: '/api/player/voted-player',
+      onError: dispatch(closeBackdrop()),
     })
 
     setVotedPlayer(data.voted)

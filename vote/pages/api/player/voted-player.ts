@@ -1,6 +1,7 @@
 import { IPlayer } from '@/vote/interfaces/player'
 import { db } from '@/vote/lib/firebase'
 import { playerIsFemale } from '@/vote/utilis/player'
+import omit from 'lodash/omit'
 import omitBy from 'lodash/omitBy'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -22,11 +23,6 @@ const votedPlayerRequestHandler = async (
 ) => {
   try {
     const userId = req.headers.userid as string
-    // get user data by userId get from jwt
-    const userRef = await db.collection('users').doc(userId).get()
-    const userObject = userRef.data()
-
-    const votedPlayerIdList = Object.keys(userObject?.votedPlayer)
 
     const basketballVoted = await db
       .collectionGroup('candidates')
@@ -66,77 +62,87 @@ const votedPlayerRequestHandler = async (
 
     const volleyballLiberoMale: IPlayer[] = []
 
-    basketballVoted.forEach(p => {
-      if (playerIsFemale(p)) {
-        basketballFemale.push({
+    if (!basketballVoted.empty) {
+      basketballVoted.forEach(p => {
+        if (playerIsFemale(p)) {
+          basketballFemale.push(omit({
+            ...p.data(),
+            id: p.id,
+            collection: 'candidates',
+            gender: 'female',
+          }, ['uid', 'votedPlayer']) as IPlayer)
+        } else {
+          basketballMale.push(omit({
+            ...p.data(),
+            id: p.id,
+            collection: 'candidates',
+            gender: 'male',
+          }, ['uid', 'votedPlayer']) as IPlayer)
+        }
+      })
+    }
+
+    if (!volleyballSetterVoted.empty) {
+      volleyballSetterVoted.forEach(p => {
+        if (playerIsFemale(p)) {
+          volleyballSetterFemale.push(omit({
+            ...p.data(),
+            id: p.id,
+            collection: 'setter',
+            gender: 'female',
+          }, ['uid', 'votedPlayer']) as IPlayer)
+        } else {
+          volleyballSetterMale.push(omit({
+            ...p.data(),
+            id: p.id,
+            collection: 'setter',
+            gender: 'male',
+          }, ['uid', 'votedPlayer']) as IPlayer)
+        }
+      })
+    }
+
+    if (!volleyballEdgelineVoted.empty) {
+      volleyballEdgelineVoted.forEach(p => {
+        if (playerIsFemale(p)) {
+          volleyballEdgelineFemale.push(omit({
+            ...p.data(),
+            id: p.id,
+            collection: 'edgeline',
+            gender: 'female',
+          }, ['uid', 'votedPlayer']) as IPlayer)
+        } else {
+          volleyballEdgelineMale.push(omit({
+            ...p.data(),
+            id: p.id,
+            collection: 'edgeline',
+            gender: 'male',
+          }, ['uid', 'votedPlayer']) as IPlayer)
+        }
+      })
+    }
+
+    if (!volleyballSpikerVoted.empty) {
+      volleyballSpikerVoted.forEach(p => {
+        volleyballSpikerMale.push(omit({
           ...p.data(),
           id: p.id,
-          collection: 'candidates',
-          gender: 'female',
-        } as IPlayer)
-      } else {
-        basketballMale.push({
-          ...p.data(),
-          id: p.id,
-          collection: 'candidates',
+          collection: 'spiker',
           gender: 'male',
-        } as IPlayer)
-      }
-    })
+        }, ['uid', 'votedPlayer']) as IPlayer)
+      })
+    }
 
-    volleyballSetterVoted.forEach(p => {
-      if (playerIsFemale(p)) {
-        volleyballSetterFemale.push({
+    if (!volleyballLiberoVoted.empty) {
+      volleyballLiberoVoted.forEach(p => {
+        volleyballLiberoMale.push(omit({
           ...p.data(),
           id: p.id,
-          collection: 'setter',
-          gender: 'female',
-        } as IPlayer)
-      } else {
-        volleyballSetterMale.push({
-          ...p.data(),
-          id: p.id,
-          collection: 'setter',
+          collection: 'libero',
           gender: 'male',
-        } as IPlayer)
-      }
-    })
-
-    volleyballEdgelineVoted.forEach(p => {
-      if (playerIsFemale(p)) {
-        volleyballEdgelineFemale.push({
-          ...p.data(),
-          id: p.id,
-          collection: 'edgeline',
-          gender: 'female',
-        } as IPlayer)
-      } else {
-        volleyballEdgelineMale.push({
-          ...p.data(),
-          id: p.id,
-          collection: 'edgeline',
-          gender: 'male',
-        } as IPlayer)
-      }
-    })
-
-    volleyballSpikerVoted.forEach(p => {
-      volleyballSpikerMale.push({
-        ...p.data(),
-        id: p.id,
-        collection: 'spiker',
-        gender: 'male',
-      } as IPlayer)
-    })
-
-    volleyballLiberoVoted.forEach(p => {
-      volleyballLiberoMale.push({
-        ...p.data(),
-        id: p.id,
-        collection: 'libero',
-        gender: 'male',
-      } as IPlayer)
-    })
+        }, ['uid', 'votedPlayer']) as IPlayer)
+      })
+    }
 
     return res
       .status(200)
