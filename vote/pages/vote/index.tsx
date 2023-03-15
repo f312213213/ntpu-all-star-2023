@@ -17,33 +17,32 @@ const VoteRootPage = ({ sportTypes }: IProps) => {
         title: '投票 - 北大明星賽 2023',
         description: '快叫你的同學來投票，一起選出這屆的明星賽隊長！',
       }}
+      useFlex
     >
-      <div className={'h-full w-full'}>
-        <div
-          className={'flex flex-col md:flex-row justify-center items-center uppercase gap-8'}
-        >
-          {
-            sportTypes.map((type) => {
-              return (
-                <Link
-                  key={type}
-                  href={`/vote/${type}`}>
-                  <div
-                    className={'shadow-xl w-64 h-64 bg-gray-500 hover:bg-gray-600 flex flex-col gap-8 items-center justify-center p-4 rounded-xl transform hover:-translate-y-2 transition'}
-                  >
-                    {
-                      type === ESports.BASKETBALL ? <FaBasketballBall className={'text-9xl'} /> : <FaVolleyballBall className={'text-9xl'} />
-                    }
-                    <p className={'text-3xl'}>
-                      {/* @ts-ignore */}
-                      {sportMap[type]}
-                    </p>
-                  </div>
-                </Link>
-              )
-            })
-          }
-        </div>
+      <div
+        className={'flex flex-col md:flex-row justify-center items-center uppercase gap-8'}
+      >
+        {
+          sportTypes.map((type) => {
+            return (
+              <Link
+                key={type}
+                href={`/vote/${type}`}>
+                <div
+                  className={'shadow-xl w-64 h-64 bg-gray-500 hover:bg-gray-600 flex flex-col gap-8 items-center justify-center p-4 rounded-xl transform hover:-translate-y-2 transition'}
+                >
+                  {
+                    type === ESports.BASKETBALL ? <FaBasketballBall className={'text-9xl'} /> : <FaVolleyballBall className={'text-9xl'} />
+                  }
+                  <p className={'text-3xl'}>
+                    {/* @ts-ignore */}
+                    {sportMap[type]}
+                  </p>
+                </div>
+              </Link>
+            )
+          })
+        }
       </div>
     </Layout>
   )
