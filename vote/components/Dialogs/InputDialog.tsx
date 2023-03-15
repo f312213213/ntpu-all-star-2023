@@ -25,6 +25,12 @@ const InputDialog = () => {
           ref={inputRef}
           onChange={changeHandler}
           className={'flex flex-col'}
+          onSubmit={(event) => {
+            event.preventDefault()
+            if (inputDialog.onConfirm) {
+              inputDialog.onConfirm(inputState)
+            }
+          }}
         >
           {
             inputDialog.content && Array.isArray(inputDialog.content) && inputDialog.content.map((input, index) => {
@@ -39,6 +45,7 @@ const InputDialog = () => {
               )
             })
           }
+          <button type={'submit'} className={'hidden'}></button>
         </form>
       }
       cancelAction={() => {

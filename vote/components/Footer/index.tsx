@@ -71,16 +71,9 @@ const Footer = () => {
       <div className={'flex justify-between w-full flex-col sm:flex-row items-center'}>
         <p>
           Design and build by {' '}
-          <Tooltip
-            trigger={'US!'}
-            content={
-              <>
-                <a href={'https://chiendavid.com'} target={'_blank'} rel={'noreferrer'}>
-                  David
-                </a>
-              </>
-            }
-          />
+          <a href={'https://chiendavid.com'} target={'_blank'} rel={'noreferrer'}>
+            David
+          </a>
         </p>
         <p>Copyright © 2023 - All right reserved</p>
       </div>

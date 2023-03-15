@@ -9,13 +9,14 @@ const HomePage = () => {
         title: '首頁 - 北大明星賽 2023',
         description: '快叫你的同學來投票，一起選出這屆的明星賽隊長！',
       }}
+      useFlex
     >
       <div className={'flex justify-center'}>
         <Link
           href={'/vote'}
-          className={'btn btn-accent'}
+          className={'btn btn-lg btn-accent'}
         >
-          投票！
+          前往投票
         </Link>
       </div>
     </Layout>
