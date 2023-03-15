@@ -17,10 +17,11 @@ interface ICustomMeta {
 
 interface IPageProps {
   customMeta?: ICustomMeta
+  useFlex?: boolean
   children: any
 }
 
-const Layout = ({ children, customMeta }: IPageProps) => {
+const Layout = ({ children, customMeta, useFlex = false }: IPageProps) => {
   const router = useRouter()
   const isMobile = useIsMobile()
   const meta = {
@@ -65,7 +66,7 @@ const Layout = ({ children, customMeta }: IPageProps) => {
           meta.keyword && <meta name={'keywords'} content={meta.keyword} />
         }
       </Head>
-      <main className={`min-h-screen w-full bg-gray-700 mt-16 py-10  px-4 md:px-10 ${isMobile && 'my-16'}`}>
+      <main className={`min-h-screen w-full bg-gray-700 mt-16 py-10  px-4 md:px-10 ${isMobile ? 'my-16' : undefined} ${useFlex ? 'flex justify-center items-center' : undefined}`}>
 
         <VoteLeftBulletin />
 

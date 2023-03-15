@@ -1,5 +1,6 @@
 import { IPlayer } from '@/vote/interfaces/player'
 import { useRouter } from 'next/router'
+import BlurImage from '@/vote/components/BlurImage'
 import Head from 'next/head'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -56,16 +57,14 @@ const ScreenSinglePlayer = () => {
       </Head>
       <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 flex justify-center items-center top-0 left-0'} ref={outRef} onClick={handleClose} >
         <div className={'p-4 md:p-8 space-y-3 bg-white w-8/12  md:w-[700px] h-screen overflow-y-auto'}>
-          <div className={'card w-full'}>
-            <figure className={'relative h-[200px]'}>
-              <Image
-                className={'object-contain'}
-                fill
+          <div className={' w-full h-full relative'}>
+            <figure className={'relative w-full h-3/5'}>
+              <BlurImage
                 src={photoURL}
                 alt={username}
               />
             </figure>
-            <div className={'card-body'}>
+            <div className={'card-body '}>
               <h2 className={'card-title text-black'}>
                 <p>
                   {username}
