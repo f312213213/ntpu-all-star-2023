@@ -1,6 +1,8 @@
+import { EDialogType } from '@/vote/features/app/interface'
 import { getAnalytics } from 'firebase/analytics'
 import { initApp } from '@/vote/features/app/services'
 import { initializeApp } from 'firebase/app'
+import { openDialog } from '@/vote/features/app/slice'
 import { useAppDispatch } from '@/vote/features/store'
 import { useEffect } from 'react'
 import useIsMounted from '@/vote/hooks/useIsMounted'
@@ -21,6 +23,26 @@ const Init = () => {
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (!isMounted) return
+    const isFirstTimeEnter = !localStorage.ALL_STAR_RECORD
+    if (isFirstTimeEnter) {
+      localStorage.ALL_STAR_RECORD = Date.now()
+      dispatch(openDialog({
+        type: EDialogType.INFO,
+        title: '提示',
+        content: (
+          <div className={'w-full flex justify-center'}>
+            <div className={'w-3/5'}>
+              <ol className={'list-decimal'}>
+                <li>帳號密碼與學生資訊系統相同</li>
+                <li>各分區剩餘票數皆顯示在畫面最上方</li>
+                <li>登入後方能投票</li>
+                <li>投完票後可至投票記錄頁面取消投票</li>
+              </ol>
+            </div>
+          </div>
+        ),
+      }))
+    }
     dispatch(initApp())
   }, [isMounted])
 
