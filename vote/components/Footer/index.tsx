@@ -70,8 +70,8 @@ const Footer = () => {
     <footer className={'footer items-center p-4 bg-neutral text-neutral-content'}>
       <div className={'flex justify-between w-full flex-col sm:flex-row items-center'}>
         <p>
-          Design and build by {' '}
-          <a href={'https://chiendavid.com'} target={'_blank'} rel={'noreferrer'}>
+          Design and Build by {' '}
+          <a href={'https://chiendavid.com'} target={'_blank'} rel={'noreferrer'} className={'underline font-bold'}>
             David
           </a>
         </p>
