@@ -78,7 +78,7 @@ const PlayerSinglePage = ({
             </p>
           </h2>
           <p>
-            {voteCount} 票
+            {count} 票
           </p>
           <p className={'whitespace-pre-wrap'}>
             {introduction}

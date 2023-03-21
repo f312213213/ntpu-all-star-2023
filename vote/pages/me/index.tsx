@@ -36,7 +36,7 @@ const UserPage = () => {
   return (
     <Layout
       customMeta={{
-        title: '我的頁面 - 北大明星賽 2023',
+        title: '投票紀錄 - 北大明星賽 2023',
         description: '',
       }}
     >
