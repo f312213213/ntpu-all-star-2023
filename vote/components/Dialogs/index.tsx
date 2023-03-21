@@ -2,12 +2,12 @@ import { isAlertDialogOpenSelector, isInfoDialogOpenSelector, isInputDialogOpenS
 import { useAppSelector } from '@/vote/features/store'
 import { useRouter } from 'next/router'
 import React from 'react'
+import ScreenSinglePlayer from '@/vote/components/ScreenSinglePlayer'
 import dynamic from 'next/dynamic'
 
 const AlertDialog = dynamic(() => import('./AlertDialog'))
 const InfoDialog = dynamic(() => import('./InfoDialog'))
 const InputDialog = dynamic(() => import('./InputDialog'))
-const ScreenSinglePlayer = dynamic(() => import('../ScreenSinglePlayer'))
 
 const Dialogs = () => {
   const router = useRouter()
