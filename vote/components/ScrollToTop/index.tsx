@@ -1,9 +1,15 @@
 import { FaArrowUp } from 'react-icons/fa'
+import { sendGALog } from '@/vote/features/app/services'
+import { useAppDispatch } from '@/vote/features/store'
 import { useRouter } from 'next/router'
 
 const ScrollToTopButton = () => {
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const onClick = () => {
+    dispatch(sendGALog({
+      eventName: 'scroll-to-top',
+    }))
     window.scrollTo({
       top: 0,
       left: 0,
