@@ -81,7 +81,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
     if (router.route === '/me') {
       dispatch(openDialog({
         type: EDialogType.ALERT,
-        title: `你確定要取消投給 ${username} 的票嗎`,
+        title: `取消投給 ${username} 的票`,
         onConfirm: async () => {
           dispatch(showBackdrop())
           const { data, success } = await apiRequest({
