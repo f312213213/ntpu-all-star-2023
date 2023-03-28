@@ -19,6 +19,7 @@ const ScreenSinglePlayer = () => {
   usePageScrollLock(!!playerData)
 
   const handleClose = (e: any) => {
+    if (e.detail > 1) return
     if (e.target === outRef.current || e.key === 'Escape') {
       router.back()
     }
