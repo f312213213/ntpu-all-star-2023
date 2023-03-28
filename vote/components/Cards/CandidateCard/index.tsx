@@ -154,7 +154,9 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
           alt={username}
         />
         <button
-        onClick={handleShare}
+          title={'share-button'}
+          name={'share-button'}
+          onClick={handleShare}
           className={`text-white absolute right-0 top-0 p-4 text-2xl ${!isMobile && 'scale-0'} group-hover:scale-100 transition`}
         >
           <AiOutlineShareAlt />
@@ -172,6 +174,8 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
         </p>
         <div className={'card-actions justify-between items-baseline'}>
           <button
+            title={'vote-button'}
+            name={'vote-button'}
             disabled={(!isLogin || currentPlayerIsVoted || currentSectionIsUpLimit) && router.route !== '/me'}
             onClick={handleVote}
             className={'btn btn-primary'}
