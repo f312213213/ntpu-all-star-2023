@@ -42,8 +42,8 @@ export const currentPlayerButtonTextSelector = (playerId: string, section: strin
     currentSectionIsUpToLimit
   ) => {
     if (!isLogin) return '尚未登入'
-    if (currentSectionIsUpToLimit) return '分區達上限'
     if (currentPlayerIsVoted) return '已投過'
+    if (currentSectionIsUpToLimit) return '分區達上限'
     return '投票'
   }
 )
