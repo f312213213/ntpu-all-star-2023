@@ -45,7 +45,7 @@ const DropdownSiteMenu = () => {
                         {
                           type: 'password',
                           name: 'password',
-                          placeholder: '密碼',
+                          placeholder: '密碼 (與學生資訊系統相同)',
                         },
                       ],
                       onConfirm: (inputState: ILoginAction) => dispatch(loginAction(inputState)),
