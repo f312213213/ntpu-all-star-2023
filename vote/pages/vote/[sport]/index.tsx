@@ -55,6 +55,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const userAgent = context.req.headers['user-agent']
 
+  // @ts-ignore
+  if (!sportMap[sport]) {
+    return {
+      notFound: true,
+    }
+  }
+
   const isMobile = Boolean(userAgent?.match(
     /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
   ))

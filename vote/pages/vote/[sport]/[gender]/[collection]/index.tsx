@@ -1,5 +1,5 @@
 import { EGender, genderMap } from '@/vote/constants/gender'
-import { ESports, sportMap } from '@/vote/constants/sports'
+import { ESports, collectionMap, sportMap } from '@/vote/constants/sports'
 import { GetServerSideProps } from 'next'
 import { IPlayer } from '@/vote/interfaces/player'
 import { db } from '@/vote/lib/firebase'
@@ -56,12 +56,26 @@ export default PlayerCategoryPage
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sport, gender, collection = 'candidates' } = context.query as { sport: string, gender: string, collection: string }
+
+  // @ts-ignore
+  if (!sportMap[sport] || !genderMap[gender] || !collectionMap[collection]) {
+    return {
+      notFound: true,
+    }
+  }
+
   const playersFromFirestore = await db
     .collection(sport)
     .doc(gender)
     .collection(collection)
     .orderBy('voteCount', 'desc')
     .get()
+
+  if (playersFromFirestore.empty) {
+    return {
+      notFound: true,
+    }
+  }
 
   const playersToPage: IPlayer[] = []
 
