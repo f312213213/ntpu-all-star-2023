@@ -1,12 +1,14 @@
 import { GetServerSideProps } from 'next'
 import { closeBackdrop, showBackdrop } from '@/vote/features/app/slice'
-import { currentPlayerIsVotedSelector, isLoginSelector } from '@/vote/features/user/selector'
+import {
+  currentPlayerButtonTextSelector,
+  currentPlayerCanVoteSelector
+} from '@/vote/features/user/selector'
 import { db } from '@/vote/lib/firebase'
 import { updateUserVoteRecord } from '@/vote/features/user/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { useRouter } from 'next/router'
 import BlurImage from '@/vote/components/BlurImage'
-import Image from 'next/image'
 import Layout from '@/vote/components/Layout'
 import React, { useState } from 'react'
 import apiRequest, { EApiMethod } from '@/vote/apis/apiClient'
@@ -28,8 +30,14 @@ const PlayerSinglePage = ({
   const router = useRouter()
   const dispatch = useAppDispatch()
 
-  const isLogin = useAppSelector(isLoginSelector)
-  const currentPlayerIsVoted = useAppSelector(currentPlayerIsVotedSelector(router.query.playerId as string))
+  const currentPlayerButtonText = useAppSelector(currentPlayerButtonTextSelector(
+    router.query.playerId as string,
+    `${router.query.sport}-${router.query.gender}-${router.query.collection}-voteCount`
+  ))
+  const currentPlayerCanVoted = useAppSelector(currentPlayerCanVoteSelector(
+    router.query.playerId as string,
+    `${router.query.sport}-${router.query.gender}-${router.query.collection}-voteCount`
+  ))
 
   const handleVote = async () => {
     dispatch(showBackdrop())
@@ -86,11 +94,11 @@ const PlayerSinglePage = ({
         </div>
         <div className={'card-action flex justify-center'}>
           <button
-            disabled={!isLogin || currentPlayerIsVoted}
+            disabled={!currentPlayerCanVoted}
             onClick={handleVote}
             className={'btn btn-primary'}
           >
-            {currentPlayerIsVoted ? '已投過' : '投票' }
+            {currentPlayerButtonText}
           </button>
         </div>
       </div>

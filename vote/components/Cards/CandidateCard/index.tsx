@@ -4,6 +4,7 @@ import { EToastType } from '@/vote/features/app/interface'
 import { IPlayer } from '@/vote/interfaces/player'
 import { closeBackdrop, openToast, showBackdrop } from '@/vote/features/app/slice'
 import {
+  currentPlayerButtonTextSelector, currentPlayerCanVoteSelector,
   currentPlayerIsVotedSelector,
   currentSectionIsUpToLimitSelector,
   isLoginSelector
@@ -69,12 +70,14 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
     }))
   }
 
-  const getButtonText = useMemo(() => {
-    if (router.route === '/me') return '取消'
-    if (currentSectionIsUpLimit) return '分區達上限'
-    if (currentPlayerIsVoted) return '已投過'
-    return '投票'
-  }, [currentPlayerIsVoted, currentSectionIsUpLimit, router.route])
+  const currentPlayerButtonText = useAppSelector(currentPlayerButtonTextSelector(
+    id,
+    `${sportType}-${gender}-${collection}-voteCount`
+  ))
+  const currentPlayerCanVoted = useAppSelector(currentPlayerCanVoteSelector(
+    id,
+    `${sportType}-${gender}-${collection}-voteCount`
+  ))
 
   const handleVote = async () => {
     dispatch(showBackdrop())
@@ -176,11 +179,11 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
           <button
             title={'vote-button'}
             name={'vote-button'}
-            disabled={(!isLogin || currentPlayerIsVoted || currentSectionIsUpLimit) && router.route !== '/me'}
+            disabled={!currentPlayerCanVoted && router.route !== '/me'}
             onClick={handleVote}
             className={'btn btn-primary'}
           >
-            {getButtonText}
+            {router.route === '/me' ? '取消' : currentPlayerButtonText}
           </button>
           <Link
             href={{
