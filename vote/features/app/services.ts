@@ -22,3 +22,12 @@ export const initApp = () => async (dispatch: AppDispatch, getState: () => RootS
   }
   dispatch(closeBackdrop())
 }
+
+interface IGA {
+  eventName: string
+  eventDetail?: any
+}
+
+export const sendGALog = ({ eventName, eventDetail }: IGA) => async () => {
+  window.gtag('event', eventName, eventDetail)
+}

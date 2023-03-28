@@ -6,14 +6,20 @@ import dynamic from 'next/dynamic'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 
+import Dialogs from '@/vote/components/Dialogs'
 import Toast from '@/vote/components/Toast'
 import store from '@/vote/features/store'
 
 const Init = dynamic(import('@/vote/components/Init'), { ssr: false })
 const Backdrop = dynamic(import('@/vote/components/Backdrop'), { ssr: false })
-const Dialogs = dynamic(import('@/vote/components/Dialogs'), { ssr: false })
 const Footer = dynamic(import('@/vote/components/Footer'), { ssr: false })
 const Header = dynamic(import('@/vote/components/Header'), { ssr: false })
+
+declare global {
+  interface Window {
+    gtag:any;
+  }
+}
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (

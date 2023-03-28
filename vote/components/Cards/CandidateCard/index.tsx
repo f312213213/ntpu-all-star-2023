@@ -8,6 +8,7 @@ import {
   currentSectionIsUpToLimitSelector,
   isLoginSelector
 } from '@/vote/features/user/selector'
+import { sendGALog } from '@/vote/features/app/services'
 import { updateUserCancelVoteRecord, updateUserVoteRecord } from '@/vote/features/user/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { useMemo, useState } from 'react'
@@ -38,6 +39,16 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
         navigator.share({
           url: `${process.env.NEXT_PUBLIC_HOST_DOMAIN}/vote/${sportType}/${gender}/${collection}/${id}`,
         })
+        dispatch(sendGALog({
+          eventName: 'share',
+          eventDetail: {
+            shareBy: 'navigator',
+            playerId: id,
+            sportType,
+            gender,
+            collection,
+          },
+        }))
         return
       }
     }
@@ -45,6 +56,16 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
     dispatch(openToast({
       type: EToastType.SUCCESS,
       title: '已複製到剪貼簿！',
+    }))
+    dispatch(sendGALog({
+      eventName: 'share',
+      eventDetail: {
+        shareBy: 'clipboard',
+        playerId: id,
+        sportType,
+        gender,
+        collection,
+      },
     }))
   }
 
@@ -79,6 +100,16 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
           sport: sportType,
         }))
       }
+
+      dispatch(sendGALog({
+        eventName: 'cancel-vote',
+        eventDetail: {
+          playerId: id,
+          sportType,
+          gender,
+          collection,
+        },
+      }))
       dispatch(closeBackdrop())
       return
     }
@@ -103,6 +134,15 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
       }))
     }
 
+    dispatch(sendGALog({
+      eventName: 'vote',
+      eventDetail: {
+        playerId: id,
+        sportType,
+        gender,
+        collection,
+      },
+    }))
     dispatch(closeBackdrop())
   }
 
