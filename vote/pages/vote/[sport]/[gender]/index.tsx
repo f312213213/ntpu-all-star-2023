@@ -56,6 +56,13 @@ export default PlayerCategoryPage
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { sport, gender, collection = 'candidates' } = context.query as { sport: string, gender: string, collection: string }
 
+  // @ts-ignore
+  if (!sportMap[sport] || !genderMap[gender]) {
+    return {
+      notFound: true,
+    }
+  }
+
   if (sport === ESports.VOLLEYBALL && collection === 'candidates') {
     return {
       redirect: {
