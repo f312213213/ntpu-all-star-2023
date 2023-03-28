@@ -4,6 +4,7 @@ import { ILoginAction } from '@/vote/features/user/interface'
 import { closeBackdrop, closeDialog, openToast, showBackdrop } from '@/vote/features/app/slice'
 import { deleteCookie, setCookie } from '@/vote/utilis/auth'
 import { getAuth, signInWithCustomToken } from 'firebase/auth'
+import { sendGALog } from '@/vote/features/app/services'
 import { userLogin, userLogout } from '@/vote/features/user/slice'
 import apiRequest, { EApiMethod, setupApiCallerAuth } from '@/vote/apis/apiClient'
 import omit from 'lodash/omit'
@@ -37,11 +38,19 @@ export const loginAction = (inputState: ILoginAction) => async (dispatch: AppDis
       type: EToastType.SUCCESS,
       title: '登入成功',
     }))
+
+    dispatch(sendGALog({
+      eventName: 'login-success',
+    }))
   } catch (e) {
     console.log(e)
     dispatch(openToast({
       type: EToastType.ERROR,
       title: '錯誤的帳號密碼',
+    }))
+
+    dispatch(sendGALog({
+      eventName: 'login-failed',
     }))
   }
   dispatch(closeBackdrop())

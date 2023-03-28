@@ -37,14 +37,14 @@ const Layout = ({ children, customMeta, useFlex = false }: IPageProps) => {
         <title>{meta.title}</title>
         <meta name={'robots'} content={'follow, index'} />
         <meta content={meta.description} name={'description'} />
-        <meta name={'url'} itemProp={'url'} content={`https://chiendavid.com${router.asPath}`} />
+        <meta name={'url'} itemProp={'url'} content={`https://allstar.ntpu.org${router.asPath}`} />
         <meta
           property={'og:url'}
-          content={`https://chiendavid.com${router.asPath}`}
+          content={`https://allstar.ntpu.org${router.asPath}`}
         />
         <link
           rel={'canonical'}
-          href={`https://chiendavid.com${router.asPath}`}
+          href={`https://allstar.ntpu.org${router.asPath}`}
         />
         <meta property={'og:type'} content={meta.type} />
         <meta property={'og:site_name'} content={meta.title} />
