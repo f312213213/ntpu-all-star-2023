@@ -160,6 +160,7 @@ const votedPlayerRequestHandler = async (
         }, (section) => section.length === 0),
       })
   } catch (e) {
+    console.log(e)
     return res.status(400).json({ status: '-1' })
   }
 }
