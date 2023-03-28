@@ -45,7 +45,31 @@ const ScreenSinglePlayer = () => {
 
   if (!router?.query?.modalPlayerId) return null
 
-  if (!playerData) return null
+  if (!playerData) {
+    return (
+      <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 flex justify-center items-center top-0 left-0'} ref={outRef} onClick={handleClose} >
+      <div className={'p-4 md:p-8 space-y-3 bg-white w-8/12  md:w-[700px] h-screen overflow-y-auto'}>
+        <div className={' w-full h-full relative'}>
+          <figure className={'relative w-full h-3/5'}>
+
+          </figure>
+          <div className={'card-body '}>
+            <h2 className={'card-title text-black'}>
+              <p>
+              </p>
+            </h2>
+            <p className={'text-gray-700'}>
+               票
+            </p>
+            <p className={'text-gray-700 whitespace-pre-wrap'}>
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    )
+  }
 
   const { introduction, photoURL, username, voteCount } = playerData
 

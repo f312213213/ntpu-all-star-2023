@@ -191,6 +191,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
             as={`${process.env.NEXT_PUBLIC_HOST_DOMAIN}/vote/${sportType}/${gender}/${collection}/${id}`}
             className={'link link-hover'}
             scroll={false}
+            shallow
           >
             顯示更多
           </Link>
