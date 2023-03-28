@@ -1,19 +1,19 @@
 import { AiOutlineShareAlt } from 'react-icons/ai'
-import { ESports } from '@/vote/constants/sports'
-import { EToastType } from '@/vote/features/app/interface'
+import { EDialogType, EToastType } from '@/vote/features/app/interface'
+import { ESports, collectionMap, sportMap } from '@/vote/constants/sports'
 import { IPlayer } from '@/vote/interfaces/player'
-import { closeBackdrop, openToast, showBackdrop } from '@/vote/features/app/slice'
+import { closeBackdrop, openDialog, openToast, showBackdrop } from '@/vote/features/app/slice'
 import {
-  currentPlayerButtonTextSelector, currentPlayerCanVoteSelector,
-  currentPlayerIsVotedSelector,
-  currentSectionIsUpToLimitSelector,
-  isLoginSelector
+  currentPlayerButtonTextSelector,
+  currentPlayerCanVoteSelector,
+  currentSectionVoteLeftSelector
 } from '@/vote/features/user/selector'
+import { genderMap } from '@/vote/constants/gender'
 import { sendGALog } from '@/vote/features/app/services'
 import { updateUserCancelVoteRecord, updateUserVoteRecord } from '@/vote/features/user/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
-import { useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import BlurImage from '@/vote/components/BlurImage'
 import Link from 'next/link'
 import apiRequest, { EApiMethod } from '@/vote/apis/apiClient'
@@ -28,9 +28,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
   const router = useRouter()
   const isMobile = useIsMobile()
   const [count, setCount] = useState(voteCount)
-  const isLogin = useAppSelector(isLoginSelector)
-  const currentPlayerIsVoted = useAppSelector(currentPlayerIsVotedSelector(id))
-  const currentSectionIsUpLimit = useAppSelector(currentSectionIsUpToLimitSelector(
+  const voteCountLeft = useAppSelector(currentSectionVoteLeftSelector(
     `${sportType}-${gender}-${collection}-voteCount`
   ))
   const dispatch = useAppDispatch()
@@ -80,73 +78,87 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
   ))
 
   const handleVote = async () => {
-    dispatch(showBackdrop())
-
     if (router.route === '/me') {
-      const { data, success } = await apiRequest({
-        endpoint: '/api/cancel-vote',
-        method: EApiMethod.POST,
-        data: {
-          id,
-          collection,
-          gender,
-          sport: sportType,
-        },
-      })
-      if (success) {
-        setCount((prevState) => prevState - 1)
-        onCancelVote?.(id)
-        dispatch(updateUserCancelVoteRecord({
-          id,
-          gender,
-          collection,
-          sport: sportType,
-        }))
-      }
+      dispatch(openDialog({
+        type: EDialogType.ALERT,
+        title: `取消投給 ${username} 的票`,
+        onConfirm: async () => {
+          dispatch(showBackdrop())
+          const { data, success } = await apiRequest({
+            endpoint: '/api/cancel-vote',
+            method: EApiMethod.POST,
+            data: {
+              id,
+              collection,
+              gender,
+              sport: sportType,
+            },
+          })
+          if (success) {
+            setCount((prevState) => prevState - 1)
+            onCancelVote?.(id)
+            dispatch(updateUserCancelVoteRecord({
+              id,
+              gender,
+              collection,
+              sport: sportType,
+            }))
+          }
 
-      dispatch(sendGALog({
-        eventName: 'cancel-vote',
-        eventDetail: {
-          playerId: id,
-          sportType,
-          gender,
-          collection,
+          dispatch(sendGALog({
+            eventName: 'cancel-vote',
+            eventDetail: {
+              playerId: id,
+              sportType,
+              gender,
+              collection,
+            },
+          }))
+
+          dispatch(closeBackdrop())
         },
       }))
-      dispatch(closeBackdrop())
       return
     }
 
-    const { data, success } = await apiRequest({
-      endpoint: '/api/vote',
-      method: EApiMethod.POST,
-      data: {
-        id,
-        collection,
-        gender,
-        sport: sportType,
-      },
-    })
-    if (success) {
-      setCount((prevState) => prevState + 1)
-      dispatch(updateUserVoteRecord({
-        id,
-        gender,
-        collection,
-        sport: sportType,
-      }))
-    }
+    dispatch(openDialog({
+      type: EDialogType.ALERT,
+      title: `你確定要投給 ${username} 嗎`,
+      content: <p>你在這分區還剩 {voteCountLeft} 票</p>,
+      onConfirm: async () => {
+        dispatch(showBackdrop())
+        const { data, success } = await apiRequest({
+          endpoint: '/api/vote',
+          method: EApiMethod.POST,
+          data: {
+            id,
+            collection,
+            gender,
+            sport: sportType,
+          },
+        })
+        if (success) {
+          setCount((prevState) => prevState + 1)
+          dispatch(updateUserVoteRecord({
+            id,
+            gender,
+            collection,
+            sport: sportType,
+          }))
+        }
 
-    dispatch(sendGALog({
-      eventName: 'vote',
-      eventDetail: {
-        playerId: id,
-        sportType,
-        gender,
-        collection,
+        dispatch(closeBackdrop())
+        dispatch(sendGALog({
+          eventName: 'vote',
+          eventDetail: {
+            playerId: id,
+            sportType,
+            gender,
+            collection,
+          },
+        }))
       },
     }))
-    dispatch(closeBackdrop())
   }
 
   return (
@@ -169,6 +181,14 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
         <h2 className={'card-title'}>
           {username}
         </h2>
+        <div className={'flex gap-2 my-2'}>
+          {/* @ts-ignore */}
+          <div className={'badge badge-outline'}>{sportMap[sportType]}-{genderMap[gender]}</div>
+          {
+            // @ts-ignore
+            sportType === ESports.VOLLEYBALL && <div className={'badge badge-outline'}>{collectionMap[collection]}</div>
+          }
+        </div>
         <p>
           {count} 票
         </p>
@@ -176,6 +196,7 @@ const CandidateCard = ({ id, introduction, photoURL, username, gender, collectio
           {introduction}
         </p>
         <div className={'card-actions justify-between items-baseline'}>
+
           <button
             title={'vote-button'}
             name={'vote-button'}

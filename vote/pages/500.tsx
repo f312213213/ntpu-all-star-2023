@@ -12,7 +12,7 @@ const ServerError = () => {
       useFlex
     >
       <div className={'flex justify-center items-center flex-col gap-10'}>
-        <h1 className={'text-8xl'}>
+        <h1 className={'text-3xl md:text-7xl'}>
           500 Server Down
         </h1>
         <p className={'text-xl'}>

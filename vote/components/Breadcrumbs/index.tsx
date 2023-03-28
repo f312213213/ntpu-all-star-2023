@@ -1,5 +1,6 @@
 import { ECollection, ESports, collectionMap, sportMap } from '@/vote/constants/sports'
 import { EGender, genderMap } from '@/vote/constants/gender'
+import { IoMdArrowDown } from 'react-icons/io'
 import { useRouter } from 'next/router'
 import BreadcrumbItem from '@/vote/components/Breadcrumbs/components/BreadcrumbItem'
 import Link from 'next/link'
@@ -43,8 +44,11 @@ const Breadcrumbs = () => {
         <li>
           <BreadcrumbItem
             trigger={(
-              <Link href={`/vote/${sportType}`}>
+              <Link href={`/vote/${sportType}`} className={'flex items-center gap-1 group'}>
                 {getSportTypeText}
+                <span className={'text-sm'}>
+                  <IoMdArrowDown />
+                </span>
               </Link>
             )}
             content={(
@@ -66,8 +70,11 @@ const Breadcrumbs = () => {
         <li>
           <BreadcrumbItem
             trigger={(
-              <Link href={`/vote/${sportType}/${gender || 'female'}`} className={gender ? undefined : 'text-gray-500'}>
+              <Link href={`/vote/${sportType}/${gender || 'female'}`} className={`flex items-center gap-1 ${gender ? undefined : 'text-gray-600'}`}>
                 {getGenderText}
+                <span className={'group-hover:rotate-180 transform transition text-sm'}>
+                  <IoMdArrowDown />
+                </span>
               </Link>
             )}
             content={(
@@ -89,8 +96,11 @@ const Breadcrumbs = () => {
             <li>
               <BreadcrumbItem
                 trigger={(
-                  <Link href={`/vote/${sportType}/${gender || 'female'}/${collection || 'edgeline'}`} className={collection ? undefined : 'text-gray-500'}>
+                  <Link href={`/vote/${sportType}/${gender || 'female'}/${collection || 'edgeline'}`} className={`flex items-center gap-1 ${collection ? undefined : 'text-gray-600'}`}>
                     {getCollectionText || '邊線攻擊手'}
+                    <span className={'group-hover:rotate-180 transform transition text-sm'}>
+                      <IoMdArrowDown />
+                    </span>
                   </Link>
                 )}
                 content={(

@@ -34,7 +34,7 @@ const VoteLeftBulletin = () => {
     'volleyball-male-libero-voteCount'
   ))
 
-  if (!isLogin || router.route === '/me' || !router.asPath.includes('vote')) return null
+  if (router.route === '/404' || !isLogin || router.route === '/me' || router.asPath === '/vote' || !router.asPath.includes('vote')) return null
 
   // if (isMobile) {
   //   if (!router.pathname.includes('collection')) return null
@@ -54,7 +54,10 @@ const VoteLeftBulletin = () => {
   // }
 
   return (
-    <div className={'max-w-full flex justify-center'}>
+    <div className={'max-w-full flex flex-col items-center justify-center'}>
+      <h1>
+        剩餘票數
+      </h1>
       <div className={'max-w-full grid grid-flow-col gap-5 text-center auto-cols-max'}>
         {
           router.query.sport === 'basketball' && (

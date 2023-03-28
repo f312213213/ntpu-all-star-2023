@@ -32,7 +32,7 @@ const Init = () => {
         content: (
           <div className={'w-full flex justify-center'}>
             <div className={'w-3/5'}>
-              <ol className={'list-decimal'}>
+              <ol className={'list-decimal text-left gap-0.5'}>
                 <li>帳號密碼與學生資訊系統相同</li>
                 <li>各分區剩餘票數皆顯示在畫面最上方</li>
                 <li>登入後方能投票</li>

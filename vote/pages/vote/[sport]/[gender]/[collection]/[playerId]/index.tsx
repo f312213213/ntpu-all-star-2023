@@ -1,8 +1,9 @@
+import { EDialogType } from '@/vote/features/app/interface'
 import { GetServerSideProps } from 'next'
-import { closeBackdrop, showBackdrop } from '@/vote/features/app/slice'
+import { closeBackdrop, openDialog, showBackdrop } from '@/vote/features/app/slice'
 import {
   currentPlayerButtonTextSelector,
-  currentPlayerCanVoteSelector
+  currentPlayerCanVoteSelector, currentSectionVoteLeftSelector
 } from '@/vote/features/user/selector'
 import { db } from '@/vote/lib/firebase'
 import { updateUserVoteRecord } from '@/vote/features/user/slice'
@@ -38,30 +39,39 @@ const PlayerSinglePage = ({
     router.query.playerId as string,
     `${router.query.sport}-${router.query.gender}-${router.query.collection}-voteCount`
   ))
+  const voteCountLeft = useAppSelector(currentSectionVoteLeftSelector(
+    `${router.query.sport}-${router.query.gender}-${router.query.collection}-voteCount`
+  ))
 
   const handleVote = async () => {
-    dispatch(showBackdrop())
-    const { data, success } = await apiRequest({
-      endpoint: '/api/vote',
-      method: EApiMethod.POST,
-      data: {
-        id: router.query.playerId,
-        collection: router.query.collection,
-        gender: router.query.gender,
-        sport: router.query.sport,
+    dispatch(openDialog({
+      type: EDialogType.ALERT,
+      title: `你確定要投給 ${username} 嗎`,
+      content: <p>你在這分區還剩 {voteCountLeft} 票</p>,
+      onConfirm: async () => {
+        dispatch(showBackdrop())
+        const { data, success } = await apiRequest({
+          endpoint: '/api/vote',
+          method: EApiMethod.POST,
+          data: {
+            id: router.query.playerId,
+            collection: router.query.collection,
+            gender: router.query.gender,
+            sport: router.query.sport,
+          },
+        })
+        if (success) {
+          setCount((prevState) => prevState + 1)
+          dispatch(updateUserVoteRecord({
+            id: router.query.playerId,
+            collection: router.query.collection,
+            gender: router.query.gender,
+            sport: router.query.sport,
+          }))
+        }
+        dispatch(closeBackdrop())
       },
-    })
-    if (success) {
-      setCount((prevState) => prevState + 1)
-      dispatch(updateUserVoteRecord({
-        id: router.query.playerId,
-        collection: router.query.collection,
-        gender: router.query.gender,
-        sport: router.query.sport,
-      }))
-    }
-
-    dispatch(closeBackdrop())
+    }))
   }
   return (
     <Layout

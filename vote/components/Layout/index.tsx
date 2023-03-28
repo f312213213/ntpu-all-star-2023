@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import Breadcrumbs from '@/vote/components/Breadcrumbs'
 import Head from 'next/head'
 import React from 'react'
+import ScrollToTopButton from '@/vote/components/ScrollToTop'
 import VoteLeftBulletin from '@/vote/components/VoteLeftBulletin'
 import useIsMobile from '@/vote/hooks/useIsMobile'
 
@@ -73,6 +74,7 @@ const Layout = ({ children, customMeta, useFlex = false }: IPageProps) => {
         <Breadcrumbs />
 
         {children}
+        <ScrollToTopButton />
       </main>
     </>
   )
