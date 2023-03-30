@@ -34,7 +34,7 @@ const VoteLeftBulletin = () => {
     'volleyball-male-libero-voteCount'
   ))
 
-  if (router.route === '/404' || !isLogin || router.route === '/me' || router.asPath === '/vote' || !router.asPath.includes('vote')) return null
+  if (router.route === '/_error' || !isLogin || router.route === '/me' || router.asPath === '/vote' || !router.asPath.includes('vote')) return null
 
   // if (isMobile) {
   //   if (!router.pathname.includes('collection')) return null

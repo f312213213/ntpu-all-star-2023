@@ -2,18 +2,19 @@ import Layout from '@/vote/components/Layout'
 import Link from 'next/link'
 import React from 'react'
 
-const NotFound = () => {
+// @ts-ignore
+const Error = ({ statusCode }) => {
   return (
     <Layout
       customMeta={{
-        title: ' 404 - 這頁找不到 - 北大明星賽 2023',
+        title: `${statusCode} - 北大明星賽 2023`,
         description: '快叫你的同學來投票，一起選出這屆的明星賽隊長！',
       }}
       useFlex
     >
       <div className={'flex justify-center items-center flex-col gap-10'}>
         <h1 className={'text-3xl md:text-7xl'}>
-          404 Not Found
+          {statusCode}
         </h1>
         <Link
           href={'/vote'}
@@ -26,4 +27,10 @@ const NotFound = () => {
   )
 }
 
-export default NotFound
+// @ts-ignore
+Error.getInitialProps = ({ res, err }) => {
+  const statusCode = res ? res.statusCode : err ? err.statusCode : 404
+  return { statusCode }
+}
+
+export default Error
