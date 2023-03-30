@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next'
 import Layout from '@/vote/components/Layout'
 import Link from 'next/link'
 import React from 'react'
@@ -24,3 +25,12 @@ const HomePage = () => {
 }
 
 export default HomePage
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    redirect: {
+      destination: '/vote',
+    },
+    props: {},
+  }
+}

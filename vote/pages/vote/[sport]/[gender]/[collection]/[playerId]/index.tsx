@@ -1,4 +1,5 @@
 import { EDialogType } from '@/vote/features/app/interface'
+import { ESports, collectionMap, sportMap } from '@/vote/constants/sports'
 import { GetServerSideProps } from 'next'
 import { closeBackdrop, openDialog, showBackdrop } from '@/vote/features/app/slice'
 import {
@@ -6,6 +7,7 @@ import {
   currentPlayerCanVoteSelector, currentSectionVoteLeftSelector
 } from '@/vote/features/user/selector'
 import { db } from '@/vote/lib/firebase'
+import { genderMap } from '@/vote/constants/gender'
 import { updateUserVoteRecord } from '@/vote/features/user/slice'
 import { useAppDispatch, useAppSelector } from '@/vote/features/store'
 import { useRouter } from 'next/router'
@@ -95,6 +97,14 @@ const PlayerSinglePage = ({
               {username}
             </p>
           </h2>
+          <div className={'flex gap-2 my-2'}>
+            {/* @ts-ignore */}
+            <div className={'badge badge-outline'}>{sportMap[router.query.sport]}-{genderMap[router.query.gender]}</div>
+            {
+              // @ts-ignore
+              router.query.sport === ESports.VOLLEYBALL && <div className={'badge badge-outline'}>{collectionMap[router.query.collection]}</div>
+            }
+          </div>
           <p>
             {count} 票
           </p>

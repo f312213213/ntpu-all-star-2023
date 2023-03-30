@@ -19,10 +19,10 @@ const ScrollToTopButton = () => {
 
   return (
     <ScrollToTop
+      easing={'easeInCubic'}
       showUnder={200}
       style={{
-
-        transitionDuration: '0.5s',
+        transitionDuration: '2s',
       }}
     >
       <button

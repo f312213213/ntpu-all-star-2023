@@ -31,7 +31,7 @@ const Breadcrumbs = () => {
     if (collection === ECollection.SETTER) return '舉球員'
   }, [collection])
 
-  if (!sportType || router.route === '/me' || !router.asPath.includes('vote')) return null
+  if (!sportType || router.route === '/_error' || router.route === '/me' || !router.asPath.includes('vote')) return null
   return (
     <div className={'text-xl breadcrumbs my-4'}>
       <ul>
