@@ -1,6 +1,8 @@
 import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { ESports, collectionMap, sportMap } from '@/vote/constants/sports'
 import { IPlayer } from '@/vote/interfaces/player'
 import { closeBackdrop, showBackdrop } from '@/vote/features/app/slice'
+import { genderMap } from '@/vote/constants/gender'
 import { useAppDispatch } from '@/vote/features/store'
 import { useRouter } from 'next/router'
 import BlurImage from '@/vote/components/BlurImage'
@@ -91,6 +93,14 @@ const ScreenSinglePlayer = () => {
                         {username}
                       </p>
                     </h2>
+                    <div className={'flex gap-2 my-2'}>
+                      {/* @ts-ignore */}
+                      <div className={'badge badge-outline'}>{sportMap[router.query.sport]}-{genderMap[router.query.gender]}</div>
+                      {
+                        // @ts-ignore
+                        router.query.sport === ESports.VOLLEYBALL && <div className={'badge badge-outline'}>{collectionMap[router.query.collection]}</div>
+                      }
+                    </div>
                     <p>
                       {voteCount} 票
                     </p>
@@ -116,6 +126,14 @@ const ScreenSinglePlayer = () => {
                       {username}
                     </p>
                   </h2>
+                  <div className={'flex gap-2 my-2'}>
+                    {/* @ts-ignore */}
+                    <div className={'badge'}>{sportMap[router.query.sport]}-{genderMap[router.query.gender]}</div>
+                    {
+                      // @ts-ignore
+                      router.query.sport === ESports.VOLLEYBALL && <div className={'badge'}>{collectionMap[router.query.collection]}</div>
+                    }
+                  </div>
                   <p className={'text-gray-700'}>
                     {voteCount} 票
                   </p>
