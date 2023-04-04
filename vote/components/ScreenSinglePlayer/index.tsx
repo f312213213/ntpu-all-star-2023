@@ -1,4 +1,5 @@
 import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { Dialog, Transition } from '@headlessui/react'
 import { ESports, collectionMap, sportMap } from '@/vote/constants/sports'
 import { IPlayer } from '@/vote/interfaces/player'
 import { closeBackdrop, showBackdrop } from '@/vote/features/app/slice'
@@ -23,11 +24,8 @@ const ScreenSinglePlayer = () => {
 
   usePageScrollLock(!!playerData)
 
-  const handleClose = (e: any) => {
-    if (e.detail > 1) return
-    if (e.target === outRef.current || e.key === 'Escape') {
-      router.back()
-    }
+  const handleClose = () => {
+    router.back()
   }
 
   const getSinglePlayer = async () => {
@@ -111,39 +109,39 @@ const ScreenSinglePlayer = () => {
                 </div>
               </div>
             </div>
-          : <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 flex justify-center items-center top-0 left-0'} ref={outRef} onClick={handleClose} >
-            <div className={'p-4 md:p-8 space-y-3 bg-white w-8/12  md:w-[700px] h-screen overflow-y-auto'}>
-              <div className={'w-full h-full relative'}>
-                <figure className={'relative w-full h-3/5'}>
-                  <BlurImage
-                    src={photoURL}
-                    alt={username}
-                  />
-                </figure>
-                <div className={'card-body'}>
-                  <h2 className={'card-title text-black'}>
-                    <p>
-                      {username}
+          : <div className={'fixed w-full h-screen bg-gray-400 z-40 bg-opacity-80 top-0 left-0'}>
+              <Dialog open as={'div'} onClose={handleClose} className={'p-4 md:p-8 space-y-3 bg-white w-8/12 md:w-[700px] fixed h-screen overflow-y-auto top-0 left-1/2 z-50 transform -translate-x-1/2'}>
+                <div className={'w-full h-full relative'}>
+                  <figure className={'relative w-full h-3/5'}>
+                    <BlurImage
+                      src={photoURL}
+                      alt={username}
+                    />
+                  </figure>
+                  <div className={'card-body'}>
+                    <h2 className={'card-title text-black'}>
+                      <p>
+                        {username}
+                      </p>
+                    </h2>
+                    <div className={'flex gap-2 my-2'}>
+                      {/* @ts-ignore */}
+                      <div className={'badge'}>{sportMap[router.query.sport]}-{genderMap[router.query.gender]}</div>
+                      {
+                        // @ts-ignore
+                        router.query.sport === ESports.VOLLEYBALL && <div className={'badge'}>{collectionMap[router.query.collection]}</div>
+                      }
+                    </div>
+                    <p className={'text-gray-700'}>
+                      {voteCount} 票
                     </p>
-                  </h2>
-                  <div className={'flex gap-2 my-2'}>
-                    {/* @ts-ignore */}
-                    <div className={'badge'}>{sportMap[router.query.sport]}-{genderMap[router.query.gender]}</div>
-                    {
-                      // @ts-ignore
-                      router.query.sport === ESports.VOLLEYBALL && <div className={'badge'}>{collectionMap[router.query.collection]}</div>
-                    }
+                    <p className={'text-gray-700 whitespace-pre-wrap'}>
+                      {introduction}
+                    </p>
                   </div>
-                  <p className={'text-gray-700'}>
-                    {voteCount} 票
-                  </p>
-                  <p className={'text-gray-700 whitespace-pre-wrap'}>
-                    {introduction}
-                  </p>
                 </div>
-              </div>
+              </Dialog>
             </div>
-          </div>
 
       }
     </>
