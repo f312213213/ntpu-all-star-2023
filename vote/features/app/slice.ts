@@ -28,6 +28,11 @@ const initialState: IState = {
   backdrop: {
     show: false,
   },
+  time: {
+    systemTimestamp: 0,
+    startTimeStamp: 0,
+    endTimeStamp: 0,
+  },
   breadcrumbConfig: {
 
   },
@@ -82,8 +87,15 @@ const appSlice = createSlice({
     closeBackdrop: (state) => {
       state.backdrop = initialState.backdrop
     },
-    initApp: state => {
-      state.status = EAppStatus.SUCCESS
+    initSystemTime: (state, action) => {
+      const {
+        systemTimestamp,
+        startTimeStamp,
+        endTimeStamp,
+      } = action.payload
+      state.time.systemTimestamp = systemTimestamp
+      state.time.startTimeStamp = startTimeStamp
+      state.time.endTimeStamp = endTimeStamp
     },
   },
 })
@@ -95,7 +107,7 @@ export const {
   closeToast,
   showBackdrop,
   closeBackdrop,
-  initApp,
+  initSystemTime,
 } = appSlice.actions
 
 export default appSlice

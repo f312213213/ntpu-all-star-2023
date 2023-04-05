@@ -1,5 +1,5 @@
 import { AppDispatch, RootState } from '@/vote/features/store'
-import { closeBackdrop, showBackdrop } from '@/vote/features/app/slice'
+import { closeBackdrop, initSystemTime, showBackdrop } from '@/vote/features/app/slice'
 import { deleteCookie, getCookie } from '@/vote/utilis/auth'
 import { logoutAction } from '@/vote/features/user/services'
 import { userLogin } from '@/vote/features/user/slice'
@@ -7,6 +7,12 @@ import apiRequest, { setupApiCallerAuth } from '@/vote/apis/apiClient'
 
 export const initApp = () => async (dispatch: AppDispatch, getState: () => RootState) => {
   const accessToken = getCookie('accessToken')
+
+  const { data: { timestamp, startTimeStamp, endTimeStamp } } = await apiRequest({
+    endpoint: '/api/system-config',
+  })
+  dispatch(initSystemTime({ systemTimestamp: timestamp, startTimeStamp, endTimeStamp }))
+
   if (!accessToken) return
   setupApiCallerAuth({ accessToken })
   dispatch(showBackdrop())
