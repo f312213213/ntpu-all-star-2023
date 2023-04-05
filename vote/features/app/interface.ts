@@ -61,6 +61,11 @@ export interface IState {
   backdrop: {
     show: boolean
   }
+  time: {
+    systemTimestamp: number
+    startTimeStamp: number
+    endTimeStamp: number
+  }
   breadcrumbConfig: {
 
   }
