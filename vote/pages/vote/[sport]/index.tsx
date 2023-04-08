@@ -56,7 +56,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const userAgent = context.req.headers['user-agent']
 
   // @ts-ignore
-  if (!sportMap[sport]) {
+  if (sport === ESports.VOLLEYBALL || !sportMap[sport]) {
     return {
       notFound: true,
     }
