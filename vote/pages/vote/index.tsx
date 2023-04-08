@@ -53,9 +53,11 @@ export default VoteRootPage
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const collectionsFromFirestore = await db.listCollections()
   context.res.setHeader('Cache-Control', `max-age=${time.DAY * 30}, public`)
+
   const sportTypes: string[] = []
+
   collectionsFromFirestore.forEach(collection => {
-    if (collection.id !== 'users') {
+    if (collection.id !== 'users' && collection.id !== ESports.VOLLEYBALL) {
       sportTypes.push(collection.id)
     }
   })
