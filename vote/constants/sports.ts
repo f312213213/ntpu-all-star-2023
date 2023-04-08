@@ -5,7 +5,7 @@ export enum ESports {
 
 export const sportMap = {
   basketball: '籃球',
-  volleyball: '排球',
+  // volleyball: '排球',
 }
 
 export enum ECollection {
