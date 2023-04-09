@@ -28,7 +28,7 @@ const Layout = ({ children, customMeta, useFlex = false }: IPageProps) => {
   const meta = {
     title: '首頁 - 北大明星賽 2023',
     description: '',
-    image: '',
+    image: '/logo.jpg',
     type: 'website',
     ...customMeta,
   } as ICustomMeta
@@ -39,6 +39,7 @@ const Layout = ({ children, customMeta, useFlex = false }: IPageProps) => {
         <meta name={'robots'} content={'follow, index'} />
         <meta content={meta.description} name={'description'} />
         <meta name={'url'} itemProp={'url'} content={`https://allstar.ntpu.org${router.asPath}`} />
+        <meta property={'image'} content={meta.image} />
         <meta
           property={'og:url'}
           content={`https://allstar.ntpu.org${router.asPath}`}
