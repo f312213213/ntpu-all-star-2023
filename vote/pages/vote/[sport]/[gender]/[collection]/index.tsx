@@ -10,6 +10,7 @@ import CandidateCard from '@/vote/components/Cards/CandidateCard'
 import Layout from '@/vote/components/Layout'
 import React, { useEffect, useState } from 'react'
 import ScreenSinglePlayer from '@/vote/components/ScreenSinglePlayer'
+import omit from 'lodash/omit'
 
 interface IProps {
   sportType: string
@@ -99,11 +100,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       // @ts-ignore
       sportType: sportMap[sport],
 
-      players: playersToPage.sort((playerA, playerB) => {
-        if (playerA.voteCount > playerB.voteCount) return -1
-        if (playerA.voteCount < playerB.voteCount) return 1
-        return 0
-      }),
+      players: playersToPage
+        .sort((playerA, playerB) => {
+          if (playerA.voteCount > playerB.voteCount) return -1
+          if (playerA.voteCount < playerB.voteCount) return 1
+          return 0
+        })
+        .map((player) => omit(player, 'votedPlayer'))
+      ,
     },
   }
 }
