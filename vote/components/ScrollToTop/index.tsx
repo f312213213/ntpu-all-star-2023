@@ -21,9 +21,6 @@ const ScrollToTopButton = () => {
     <ScrollToTop
       easing={'easeInCubic'}
       showUnder={200}
-      style={{
-        transitionDuration: '2s',
-      }}
     >
       <button
         title={'scroll-to-top'}
@@ -31,9 +28,9 @@ const ScrollToTopButton = () => {
         style={{ marginBottom: isMobile ? '64px' : 0 }}
         onClick={onClick}
       >
-      <span className={'text-2xl'}>
-        <FaArrowUp />
-      </span>
+        <span className={'text-2xl'}>
+          <FaArrowUp />
+        </span>
       </button>
     </ScrollToTop>
   )
