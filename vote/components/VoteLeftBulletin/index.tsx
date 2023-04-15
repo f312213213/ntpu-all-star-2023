@@ -136,7 +136,7 @@ const VoteLeftBulletin = () => {
 
                             <div className={'flex flex-col items-center gap-4'}>
                               <p className={'text-2xl'}>
-                                排球 - 中間手
+                                排球 - 中間攔網手
                               </p>
                               <div className={'flex gap-4'}>
                                 <BulletinItem value={volleyballMaleSpikerLeft} gender={genderMap.male} />

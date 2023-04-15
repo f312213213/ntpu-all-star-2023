@@ -26,7 +26,7 @@ const Breadcrumbs = () => {
 
   const getCollectionText = useMemo(() => {
     if (collection === ECollection.LIBERO) return '自由球員'
-    if (collection === ECollection.SPIKER) return '中間手'
+    if (collection === ECollection.SPIKER) return '中間攔網手'
     if (collection === ECollection.EDGELINE) return '邊線攻擊手'
     if (collection === ECollection.SETTER) return '舉球員'
   }, [collection])
