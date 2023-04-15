@@ -57,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const sportTypes: string[] = []
 
   collectionsFromFirestore.forEach(collection => {
-    if (collection.id !== 'users' && collection.id !== ESports.VOLLEYBALL) {
+    if (collection.id !== 'users') {
       sportTypes.push(collection.id)
     }
   })
