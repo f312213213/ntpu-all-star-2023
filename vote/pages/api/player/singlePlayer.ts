@@ -2,6 +2,7 @@ import { db } from '@/vote/lib/firebase'
 import { firestore } from 'firebase-admin'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import DocumentData = firestore.DocumentData;
+import omit from 'lodash/omit'
 
 interface Data {
   status: string
@@ -36,7 +37,7 @@ const SinglePlayerRequestHandler = async (
     .json({
       status: '0',
       data: {
-        player: playerFromFirestore.data(),
+        player: omit(playerFromFirestore.data(), 'votedPlayer'),
       },
     })
 }
