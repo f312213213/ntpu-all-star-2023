@@ -66,12 +66,12 @@ const apiRequest = async ({ endpoint, params, data, onError, method = EApiMethod
     if (onError) {
       onError(e)
       return {
-        data: null,
+        data: e,
         success: false,
       }
     }
     return {
-      data: null,
+      data: e,
       success: false,
     }
   }

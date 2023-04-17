@@ -35,6 +35,12 @@ const loginRequestHandler = async (
     method: 'post',
     body: searchParams,
   })
+  const status = String(response.status)
+  if (status.includes('5')) {
+    return res
+      .status(503)
+      .json({ status: '-1' })
+  }
   const responseText = await response.text()
 
   // 學校系統如果有回傳 window.open 相關字樣則為登入成功 & firebase lib init 完成

@@ -19,6 +19,14 @@ export const loginAction = (inputState: ILoginAction) => async (dispatch: AppDis
       data: inputState,
     })
 
+    if (data?.response?.status === 503) {
+      throw Error('驗證伺服器故障！')
+    }
+
+    if (data?.response?.status === 403) {
+      throw Error('錯誤的帳號密碼！')
+    }
+
     const { user: { customToken } } = data
 
     const signInResult = await signInWithCustomToken(auth, customToken)
@@ -43,10 +51,10 @@ export const loginAction = (inputState: ILoginAction) => async (dispatch: AppDis
       eventName: 'login-success',
     }))
   } catch (e) {
-    console.log(e)
     dispatch(openToast({
       type: EToastType.ERROR,
-      title: '錯誤的帳號密碼',
+      // @ts-ignore
+      title: e.message,
     }))
 
     dispatch(sendGALog({
