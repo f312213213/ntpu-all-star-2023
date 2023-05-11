@@ -17,7 +17,7 @@ const HomePage = () => {
           href={'/vote'}
           className={'btn btn-lg btn-accent'}
         >
-          前往投票
+          前往投 票
         </Link>
       </div>
     </Layout>
